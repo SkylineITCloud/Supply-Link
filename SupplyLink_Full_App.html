@@ -405,6 +405,7 @@ body{background:#060810;font-family:'DM Sans',sans-serif;color:var(--white);min-
   </div>
   <button class="btn" onclick="doLogin()">Sign In →</button>
   <p style="text-align:center;margin-top:14px;font-size:12px;color:var(--mist)">No account? <span style="color:var(--g);cursor:pointer">Register</span></p>
+<<<<<<< HEAD
 
   <!-- DEMO CREDENTIALS PANEL -->
   <div style="margin-top:20px;border:1px solid rgba(0,200,150,.2);border-radius:var(--r);overflow:hidden;">
@@ -415,6 +416,8 @@ body{background:#060810;font-family:'DM Sans',sans-serif;color:var(--white);min-
     </div>
     <div id="credList" style="padding:6px 0;"></div>
   </div>
+=======
+>>>>>>> 30b242d502b555e9d9ba0ecfd64812869c0db37a
 </div>
 
 <!-- ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
@@ -1120,10 +1123,17 @@ body{background:#060810;font-family:'DM Sans',sans-serif;color:var(--white);min-
 let cur = 'splash', role = 'buyer', toastTimer;
 
 const USERS = {
+<<<<<<< HEAD
   manager: { email:'manager@supplylink.co.za',  pw:'Manager@2026',  name:'Pstg Gallant' },
   buyer:   { email:'buyer@supplylink.co.za',    pw:'Buyer@2026',    name:'Themba Mokoena' },
   driver:  { email:'driver@supplylink.co.za',   pw:'Driver@2026',   name:'Sipho Nkosi' },
   provider:{ email:'provider@supplylink.co.za', pw:'Provider@2026', name:'Sipho Provider' },
+=======
+  manager: { email:'pstgallant@gmail.com', pw:'123456789' },
+  buyer:   { email:'buyer@test.com',        pw:'test123' },
+  driver:  { email:'driver@test.com',       pw:'test123' },
+  provider:{ email:'provider@test.com',     pw:'test123' },
+>>>>>>> 30b242d502b555e9d9ba0ecfd64812869c0db37a
 };
 
 const NAV_CFG = {
@@ -1369,6 +1379,7 @@ function openMgrChat() {
   // handled by mgr-chat screen below
 }
 
+<<<<<<< HEAD
 // ─── BUILD CREDENTIALS PANEL ───
 (function buildCredPanel() {
   const cfg = [
@@ -1410,6 +1421,8 @@ function fillCreds(r) {
   toast(`Credentials filled for ${lbls[r]} — tap Sign In`);
 }
 
+=======
+>>>>>>> 30b242d502b555e9d9ba0ecfd64812869c0db37a
 // ─── TOAST ───
 function toast(msg) {
   const el = document.getElementById('toastEl');
