@@ -1110,10 +1110,14 @@ body{background:#060810;font-family:'DM Sans',sans-serif;color:var(--white);min-
 let cur = 'splash', role = 'buyer', toastTimer;
 
 const USERS = {
-  manager: { email:'pstgallant@gmail.com', pw:'123456789' },
-  buyer:   { email:'buyer@test.com',        pw:'test123' },
-  driver:  { email:'driver@test.com',       pw:'test123' },
-  provider:{ email:'provider@test.com',     pw:'test123' },
+  manager:    { email:'pstgallant@gmail.com', pw:'123456789' },
+  buyer:      { email:'buyer@test.com',        pw:'test123' },
+  driver:     { email:'driver@test.com',       pw:'test123' },
+  provider:   { email:'provider@test.com',     pw:'test123' },
+  admin:      { email:'admin@supplylink.com',  pw:'admin123' },
+  warehouse:  { email:'warehouse@test.com',    pw:'test123' },
+  auditor:    { email:'auditor@test.com',      pw:'test123' },
+  dispatcher: { email:'dispatcher@test.com',   pw:'test123' },
 };
 
 const NAV_CFG = {
@@ -1180,7 +1184,16 @@ function selectRole(r, el) {
   role = r;
   document.querySelectorAll('.rcard').forEach(c => c.classList.remove('sel'));
   el.classList.add('sel');
-  const lbls = { buyer:'Buyer', provider:'Service Provider', driver:'Driver', manager:'Operations Manager' };
+  const lbls = { 
+    buyer:'Buyer', 
+    provider:'Service Provider', 
+    driver:'Driver', 
+    manager:'Operations Manager',
+    admin:'System Administrator',
+    warehouse:'Warehouse Manager',
+    auditor:'Compliance Auditor',
+    dispatcher:'Logistics Dispatcher'
+  };
   document.getElementById('loginTitle').innerHTML = `Sign in as<br><span class="accent">${lbls[r]}</span>`;
   setTimeout(() => goTo('login'), 180);
 }
@@ -1196,7 +1209,7 @@ function doLogin() {
   const pw = document.getElementById('pwInp').value;
   const errEl = document.getElementById('errMsg');
 
-  // Check manager credentials specifically
+  // Check credentials for all roles
   if (email === USERS.manager.email && pw === USERS.manager.pw) {
     role = 'manager';
   } else if (email === USERS.buyer.email && pw === USERS.buyer.pw) {
@@ -1205,6 +1218,14 @@ function doLogin() {
     role = 'driver';
   } else if (email === USERS.provider.email && pw === USERS.provider.pw) {
     role = 'provider';
+  } else if (email === USERS.admin.email && pw === USERS.admin.pw) {
+    role = 'admin';
+  } else if (email === USERS.warehouse.email && pw === USERS.warehouse.pw) {
+    role = 'warehouse';
+  } else if (email === USERS.auditor.email && pw === USERS.auditor.pw) {
+    role = 'auditor';
+  } else if (email === USERS.dispatcher.email && pw === USERS.dispatcher.pw) {
+    role = 'dispatcher';
   } else if (pw.length >= 6) {
     // Demo: any email + 6+ char password logs in with selected role
   } else {
@@ -1214,7 +1235,16 @@ function doLogin() {
 
   errEl.style.display = 'none';
   buildNav(role);
-  const dash = { manager:'mgr-dash', driver:'drv-dash', buyer:'buy-dash', provider:'prv-dash' }[role];
+  const dash = { 
+    manager:'mgr-dash', 
+    driver:'drv-dash', 
+    buyer:'buy-dash', 
+    provider:'prv-dash',
+    admin:'mgr-dash',
+    warehouse:'mgr-inventory',
+    auditor:'mgr-risk',
+    dispatcher:'mgr-orders'
+  }[role];
   goTo(dash);
   syncNav(dash);
   toast('Signed in successfully ✓');
