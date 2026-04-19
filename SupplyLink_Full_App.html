@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SupplyLink — Gigaba & Gaba Industries</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --ink:#0B0F1A; --ink2:#141928; --ink3:#1E2640;
+  --steel:#4A5568; --mist:#8896A9; --fog:#C8D0DC;
+  --snow:#EEF1F6; --white:#FFFFFF;
+  --g:#00C896; --g2:#00A87A; --g3:#006B4F;
+  --glow:rgba(0,200,150,0.15);
+  --amber:#F59E0B; --red:#EF4444; --blue:#3B82F6; --purple:#8B5CF6;
+  --card:rgba(255,255,255,0.04); --card2:rgba(255,255,255,0.07);
+  --border:rgba(255,255,255,0.08); --border2:rgba(255,255,255,0.14);
+  --r:16px; --r2:12px; --r3:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:#060810;font-family:'DM Sans',sans-serif;color:var(--white);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;}
+.syne{font-family:'Syne',sans-serif;}
+
+/* PHONE */
+.phone{width:390px;height:844px;background:var(--ink2);border-radius:48px;border:2px solid rgba(255,255,255,0.1);overflow:hidden;position:relative;box-shadow:0 60px 120px rgba(0,0,0,0.8),inset 0 1px 0 rgba(255,255,255,0.08);display:flex;flex-direction:column;}
+
+/* STATUS BAR */
+.sb{display:flex;justify-content:space-between;align-items:center;padding:14px 24px 6px;font-size:12px;font-weight:500;flex-shrink:0;}
+.sb-notch{width:110px;height:26px;background:var(--ink);border-radius:0 0 18px 18px;display:flex;align-items:center;justify-content:center;gap:5px;}
+.nc{width:9px;height:9px;background:#111;border-radius:50%;border:1.5px solid #222;}
+.sb-right{display:flex;gap:4px;align-items:center;}
+
+/* SCREENS */
+.sc-wrap{flex:1;overflow:hidden;position:relative;}
+.sc{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;opacity:0;pointer-events:none;transition:opacity .28s ease,transform .28s ease;transform:translateX(24px);}
+.sc.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.sc::-webkit-scrollbar{display:none;}
+.sc.slide-back{transform:translateX(-24px);}
+
+/* BOTTOM NAV */
+.bnav{display:flex;justify-content:space-around;align-items:center;padding:10px 0 22px;background:rgba(10,14,24,0.97);border-top:1px solid var(--border);backdrop-filter:blur(20px);flex-shrink:0;}
+.ni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:5px 12px;border-radius:12px;transition:all .2s;color:var(--mist);font-size:10px;font-weight:500;}
+.ni.active{color:var(--g);}
+.ni svg{width:21px;height:21px;}
+.ndot{width:4px;height:4px;border-radius:50%;background:var(--g);margin:0 auto;opacity:0;}
+.ni.active .ndot{opacity:1;}
+
+/* SHARED */
+.pg{padding:22px 18px 20px;}
+.ph{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:4px;}
+.psub{font-size:13px;color:var(--mist);margin-bottom:18px;line-height:1.5;}
+.sec{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
+.sall{font-size:12px;color:var(--g);font-family:'DM Sans',sans-serif;cursor:pointer;font-weight:400;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:10px;cursor:pointer;transition:all .2s;}
+.card:hover{border-color:var(--border2);background:var(--card2);}
+.back{display:flex;align-items:center;gap:6px;color:var(--g);font-size:13px;font-weight:500;cursor:pointer;margin-bottom:20px;width:fit-content;}
+.pill{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;font-family:'Syne',sans-serif;}
+.pill.t{background:rgba(59,130,246,.15);color:#60A5FA;}
+.pill.d{background:rgba(0,200,150,.15);color:var(--g);}
+.pill.p{background:rgba(245,158,11,.15);color:var(--amber);}
+.pill.r{background:rgba(239,68,68,.15);color:var(--red);}
+.pill.pu{background:rgba(139,92,246,.15);color:#A78BFA;}
+.tag{font-size:11px;padding:3px 9px;border-radius:20px;background:rgba(255,255,255,.05);color:var(--mist);border:1px solid var(--border);}
+.inp{width:100%;padding:13px 15px;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:var(--r2);color:var(--white);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;margin-bottom:12px;}
+.inp:focus{border-color:var(--g);}
+.inp::placeholder{color:var(--mist);}
+.ilbl{font-size:12px;color:var(--mist);margin-bottom:6px;display:block;font-weight:500;}
+.btn{background:var(--g);color:var(--ink);font-family:'Syne',sans-serif;font-size:14px;font-weight:700;padding:14px;border-radius:var(--r);border:none;cursor:pointer;width:100%;transition:all .2s;}
+.btn:hover{background:var(--g2);transform:translateY(-1px);}
+.btn-o{background:transparent;color:var(--white);font-family:'Syne',sans-serif;font-size:14px;font-weight:600;padding:14px;border-radius:var(--r);border:1px solid var(--border2);cursor:pointer;width:100%;transition:all .2s;margin-top:10px;}
+.btn-o:hover{background:var(--card2);}
+.btn-sm{padding:8px 14px;border-radius:9px;background:var(--g);color:var(--ink);font-size:12px;font-weight:700;cursor:pointer;border:none;font-family:'Syne',sans-serif;transition:all .2s;}
+.btn-sm:hover{background:var(--g2);}
+.btn-sm.out{background:transparent;color:var(--g);border:1px solid rgba(0,200,150,.35);}
+.row{display:flex;justify-content:space-between;align-items:center;}
+.col2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.col3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.accent{color:var(--g);}
+.muted{color:var(--mist);}
+.bold{font-family:'Syne',sans-serif;font-weight:700;}
+.sep{height:1px;background:var(--border);margin:14px 0;}
+.badge{width:18px;height:18px;border-radius:50%;background:var(--g);color:var(--ink);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;}
+.avatar{display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;border-radius:14px;flex-shrink:0;}
+
+/* KPI cards */
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px;}
+.kpi-lbl{font-size:11px;color:var(--mist);margin-bottom:6px;font-weight:500;letter-spacing:.3px;}
+.kpi-val{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;}
+.kpi-chg{font-size:11px;margin-top:3px;}
+.up{color:var(--g);}
+.dn{color:var(--red);}
+.warn{color:var(--amber);}
+
+/* Progress bar */
+.pbar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin:8px 0;}
+.pfill{height:100%;border-radius:3px;background:var(--g);}
+
+/* Map mock */
+.map{width:100%;height:180px;border-radius:var(--r);background:linear-gradient(135deg,#0f2027,#1a2f3f,#0d1f0f);border:1px solid var(--border);margin-bottom:16px;position:relative;overflow:hidden;}
+.mgrid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,200,150,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,150,.04) 1px,transparent 1px);background-size:28px 28px;}
+.mroute{position:absolute;height:2px;background:linear-gradient(90deg,var(--g),transparent);top:50%;width:65%;left:18%;}
+.mdot{width:11px;height:11px;border-radius:50%;position:absolute;}
+.mdot.s{background:var(--g);left:18%;top:calc(50% - 5px);box-shadow:0 0 10px var(--g);}
+.mdot.c{background:var(--blue);left:56%;top:calc(50% - 5px);animation:pulse 2s infinite;}
+.mdot.e{background:var(--mist);right:18%;top:calc(50% - 5px);}
+@keyframes pulse{0%,100%{box-shadow:0 0 6px var(--blue);}50%{box-shadow:0 0 18px var(--blue);}}
+.mlbl{position:absolute;bottom:10px;right:10px;font-size:10px;color:var(--g);background:rgba(0,0,0,.6);padding:3px 7px;border-radius:5px;}
+
+/* Timeline */
+.tl{padding-left:6px;}
+.tli{display:flex;gap:12px;padding-bottom:14px;position:relative;}
+.tli:not(:last-child)::before{content:'';position:absolute;left:4px;top:14px;bottom:0;width:2px;background:var(--border);}
+.tldt{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.tldt.dn{background:var(--g);}
+.tldt.ac{background:var(--blue);box-shadow:0 0 10px var(--blue);}
+.tldt.pd{background:var(--border);border:2px solid var(--mist);}
+.tlh{font-size:13px;font-weight:500;margin-bottom:2px;}
+.tlp{font-size:11px;color:var(--mist);}
+
+/* Chat */
+.msg{max-width:76%;padding:10px 13px;border-radius:14px;font-size:13px;line-height:1.5;}
+.msg.t{background:var(--card2);border-radius:4px 14px 14px 14px;align-self:flex-start;}
+.msg.m{background:var(--g);color:var(--ink);border-radius:14px 4px 14px 14px;align-self:flex-end;font-weight:500;}
+.mt{font-size:10px;color:var(--mist);margin-top:3px;}
+
+/* Toast */
+.toast{position:absolute;bottom:88px;left:16px;right:16px;background:var(--ink3);border:1px solid var(--g);border-radius:var(--r2);padding:11px 14px;display:flex;align-items:center;gap:9px;font-size:13px;font-weight:500;transform:translateY(16px);opacity:0;transition:all .3s;pointer-events:none;z-index:999;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* Modal overlay */
+.modal-wrap{position:absolute;inset:0;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .25s;}
+.modal-wrap.open{opacity:1;pointer-events:all;}
+.modal{background:var(--ink2);border-radius:28px 28px 0 0;border-top:1px solid var(--border2);padding:20px 18px 36px;width:100%;transform:translateY(100%);transition:transform .3s ease;}
+.modal-wrap.open .modal{transform:translateY(0);}
+.modal-handle{width:36px;height:4px;border-radius:2px;background:var(--border2);margin:0 auto 18px;}
+
+/* Animated entrance */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.sc.active>*{animation:fadeUp .35s ease both;}
+.sc.active>*:nth-child(2){animation-delay:.05s;}
+.sc.active>*:nth-child(3){animation-delay:.1s;}
+.sc.active>*:nth-child(4){animation-delay:.15s;}
+.sc.active>*:nth-child(5){animation-delay:.2s;}
+.sc.active>*:nth-child(6){animation-delay:.25s;}
+.sc.active>*:nth-child(7){animation-delay:.3s;}
+
+/* ======== SPLASH ======== */
+#splash{background:radial-gradient(ellipse at 20% 40%,rgba(0,200,150,.12) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(59,130,246,.07) 0%,transparent 50%),var(--ink2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;min-height:100%;gap:0;}
+.slogo{width:76px;height:76px;background:linear-gradient(135deg,var(--g),var(--g3));border-radius:22px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:white;margin-bottom:22px;box-shadow:0 0 40px rgba(0,200,150,.35);}
+.stitle{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;text-align:center;line-height:1.1;margin-bottom:10px;}
+.stitle span{color:var(--g);}
+.ssub{font-size:14px;color:var(--mist);text-align:center;line-height:1.6;margin-bottom:44px;}
+.sbtns{width:100%;display:flex;flex-direction:column;gap:11px;}
+.stag{font-size:10px;color:var(--mist);margin-top:20px;text-align:center;letter-spacing:2px;text-transform:uppercase;}
+
+/* ======== ROLE SELECT ======== */
+.rcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:12px;cursor:pointer;transition:all .22s;display:flex;align-items:center;gap:15px;}
+.rcard:hover,.rcard.sel{border-color:var(--g);background:var(--glow);transform:translateX(3px);}
+.rico{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.rinfo h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:3px;}
+.rinfo p{font-size:12px;color:var(--mist);line-height:1.4;}
+
+/* ======== LOGIN ======== */
+#login{padding:28px 18px;min-height:100%;background:var(--ink2);}
+.bio-row{display:flex;gap:8px;margin:4px 0 20px;}
+.bio{flex:1;padding:11px;background:var(--card);border:1px solid var(--border);border-radius:var(--r2);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;font-size:12px;color:var(--mist);}
+.bio:hover{border-color:var(--g);color:var(--g);}
+.div-row{display:flex;align-items:center;gap:10px;margin:16px 0;}
+.div-line{flex:1;height:1px;background:var(--border);}
+.div-txt{font-size:11px;color:var(--mist);}
+.err-msg{font-size:12px;color:var(--red);text-align:center;margin-bottom:12px;display:none;}
+
+/* ======== DASHBOARD ======== */
+.dhead{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;}
+.nbell{width:40px;height:40px;border-radius:12px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;}
+.ndot2{width:7px;height:7px;border-radius:50%;background:var(--g);position:absolute;top:7px;right:7px;border:2px solid var(--ink2);}
+.qa{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;}
+.qai{display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;}
+.qaico{width:50px;height:50px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:20px;transition:transform .2s;}
+.qaico:hover{transform:scale(1.08);}
+.qalbl{font-size:10px;color:var(--mist);text-align:center;}
+
+/* ======== TRACKING ======== */
+.sa-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px;}
+.sa-btn{padding:9px 6px;border-radius:9px;text-align:center;font-size:11px;font-weight:600;cursor:pointer;border:none;font-family:'Syne',sans-serif;transition:all .2s;}
+.sa-btn.pu{background:rgba(245,158,11,.14);color:var(--amber);border:1px solid rgba(245,158,11,.3);}
+.sa-btn.tr{background:rgba(59,130,246,.14);color:#60A5FA;border:1px solid rgba(59,130,246,.3);}
+.sa-btn.de{background:rgba(0,200,150,.14);color:var(--g);border:1px solid rgba(0,200,150,.3);}
+.sa-btn:hover{transform:scale(1.03);}
+
+/* ======== MARKETPLACE ======== */
+.srch{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:var(--r2);padding:11px 14px;margin-bottom:16px;}
+.srch input{background:none;border:none;outline:none;color:var(--white);font-size:13px;flex:1;font-family:'DM Sans',sans-serif;}
+.srch input::placeholder{color:var(--mist);}
+.cats{display:flex;gap:8px;overflow-x:auto;padding-bottom:3px;margin-bottom:16px;}
+.cats::-webkit-scrollbar{display:none;}
+.cp{padding:7px 14px;border-radius:20px;white-space:nowrap;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:var(--card);color:var(--mist);flex-shrink:0;}
+.cp.active{background:var(--g);color:var(--ink);border-color:var(--g);font-weight:600;}
+.lcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:15px;margin-bottom:11px;cursor:pointer;transition:all .22s;}
+.lcard:hover{border-color:var(--g);transform:translateX(2px);}
+.ltop{display:flex;gap:13px;align-items:flex-start;margin-bottom:12px;}
+.limg{width:60px;height:60px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;}
+.lname{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:3px;}
+.ldesc{font-size:12px;color:var(--mist);line-height:1.4;}
+.vbadge{display:inline-flex;align-items:center;gap:3px;font-size:11px;color:var(--g);margin-top:2px;}
+.ltags{display:flex;flex-wrap:wrap;gap:5px;}
+.lfoot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;border-top:1px solid var(--border);padding-top:10px;}
+.lprice{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--g);}
+.lprice span{font-size:11px;font-weight:400;color:var(--mist);font-family:'DM Sans',sans-serif;}
+
+/* ======== CHAT ======== */
+.chi{display:flex;align-items:center;gap:12px;padding:13px 18px;cursor:pointer;transition:background .2s;}
+.chi:hover{background:var(--card);}
+.chav{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;font-weight:700;font-family:'Syne',sans-serif;}
+.chin{flex:1;min-width:0;}
+.chn{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:2px;}
+.chp{font-size:12px;color:var(--mist);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.chmeta{display:flex;flex-direction:column;align-items:flex-end;gap:5px;}
+.cht{font-size:10px;color:var(--mist);}
+
+/* Convo slide */
+.convo{position:absolute;inset:0;background:var(--ink2);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s ease;z-index:20;}
+.convo.open{transform:translateX(0);}
+.convoh{display:flex;align-items:center;gap:11px;padding:14px 18px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.convom{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:9px;}
+.convom::-webkit-scrollbar{display:none;}
+.convoi{display:flex;align-items:center;gap:9px;padding:11px 14px 22px;border-top:1px solid var(--border);}
+.convo-inp{flex:1;padding:11px 14px;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:22px;color:var(--white);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;}
+.convo-inp:focus{border-color:var(--g);}
+.sbtn{width:40px;height:40px;border-radius:50%;background:var(--g);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.sbtn:hover{background:var(--g2);}
+
+/* ======== PROFILE ======== */
+.pav{width:76px;height:76px;border-radius:22px;background:linear-gradient(135deg,var(--g),var(--g3));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:26px;font-weight:800;margin-bottom:12px;position:relative;}
+.pvbadge{position:absolute;bottom:-3px;right:-3px;width:18px;height:18px;border-radius:50%;background:var(--g);border:2px solid var(--ink2);display:flex;align-items:center;justify-content:center;font-size:9px;}
+.pstats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:20px;}
+.pst{background:var(--card);padding:13px;text-align:center;}
+.pstv{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:var(--g);}
+.pstl{font-size:10px;color:var(--mist);margin-top:2px;}
+.ml{font-size:10px;color:var(--mist);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;font-weight:500;}
+.mi{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--r2);background:var(--card);border:1px solid var(--border);margin-bottom:7px;cursor:pointer;transition:all .2s;}
+.mi:hover{border-color:var(--border2);}
+.mico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.mt2{flex:1;font-size:13px;font-weight:500;}
+.mx{color:var(--mist);font-size:16px;}
+.lout{width:100%;padding:14px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:var(--r);color:var(--red);font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;}
+.lout:hover{background:rgba(239,68,68,.18);}
+
+/* ======== MANAGER SPECIFIC ======== */
+.fleet-item{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px;display:flex;gap:13px;align-items:center;cursor:pointer;transition:all .2s;}
+.fleet-item:hover{border-color:var(--border2);}
+.fleet-ico{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.fleet-info{flex:1;}
+.fleet-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:3px;}
+.fleet-sub{font-size:12px;color:var(--mist);}
+
+.vendor-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px;}
+.vendor-top{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.vendor-av{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;flex-shrink:0;}
+.vendor-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:2px;}
+.vendor-sub{font-size:12px;color:var(--mist);}
+.rating{display:flex;align-items:center;gap:3px;font-size:12px;color:var(--amber);}
+
+.risk-item{background:var(--card);border-left:3px solid var(--red);border-radius:0 var(--r2) var(--r2) 0;padding:12px 14px;margin-bottom:8px;}
+.risk-item.med{border-left-color:var(--amber);}
+.risk-item.low{border-left-color:var(--g);}
+.risk-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:3px;}
+.risk-desc{font-size:12px;color:var(--mist);}
+
+/* Chart bars */
+.chart{display:flex;align-items:flex-end;gap:6px;height:80px;margin-bottom:6px;}
+.bar{flex:1;border-radius:4px 4px 0 0;background:var(--g);opacity:.7;transition:opacity .2s;}
+.bar:hover{opacity:1;}
+.bar.a{background:var(--blue);}
+.blbls{display:flex;gap:6px;}
+.blbl{flex:1;text-align:center;font-size:9px;color:var(--mist);}
+
+/* Order details */
+.od-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.od-row:last-child{border-bottom:none;}
+.od-lbl{color:var(--mist);}
+.od-val{font-weight:500;}
+
+/* ======== DRIVER SPECIFIC ======== */
+.route-card{background:linear-gradient(135deg,rgba(0,200,150,.12),rgba(59,130,246,.08));border:1px solid rgba(0,200,150,.25);border-radius:var(--r);padding:16px;margin-bottom:14px;}
+.route-stops{display:flex;flex-direction:column;gap:10px;margin-top:12px;}
+.rs{display:flex;align-items:center;gap:10px;}
+.rs-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.rs-dot.s{background:var(--g);}
+.rs-dot.e{background:var(--mist);}
+.rs-line{width:2px;height:20px;background:var(--border);margin-left:4px;}
+.rs-info{font-size:13px;}
+.rs-sub{font-size:11px;color:var(--mist);}
+
+.doc-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);}
+.doc-row:last-child{border-bottom:none;}
+.doc-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.doc-info{flex:1;}
+.doc-name{font-size:13px;font-weight:500;margin-bottom:2px;}
+.doc-sub{font-size:11px;color:var(--mist);}
+
+/* ======== BUYER/PROVIDER SPECIFIC ======== */
+.order-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px;cursor:pointer;transition:all .2s;}
+.order-card:hover{border-color:var(--border2);}
+.order-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.order-id{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;}
+.order-sub{font-size:12px;color:var(--mist);margin-top:2px;}
+.order-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--mist);}
+
+/* ESG */
+.esg-ring{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100px;height:100px;border-radius:50%;border:8px solid rgba(0,200,150,.25);position:relative;}
+.esg-ring::after{content:'';position:absolute;inset:0;border-radius:50%;border:8px solid var(--g);clip-path:polygon(50% 0%,100% 0%,100% 100%,50% 100%);}
+.esg-val{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--g);}
+.esg-lbl{font-size:10px;color:var(--mist);}
+
+/* Workforce */
+.worker-row{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--border);}
+.worker-row:last-child{border-bottom:none;}
+.wav{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;flex-shrink:0;}
+.winfo{flex:1;}
+.wname{font-size:13px;font-weight:500;margin-bottom:2px;}
+.wrole{font-size:11px;color:var(--mist);}
+.wstatus{font-size:11px;font-weight:600;}
+
+/* Inventory */
+.inv-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+.inv-row:last-child{border-bottom:none;}
+.inv-ico{font-size:20px;}
+.inv-info{flex:1;}
+.inv-name{font-size:13px;font-weight:500;margin-bottom:2px;}
+.inv-sub{font-size:11px;color:var(--mist);}
+.inv-qty{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;}
+</style>
+</head>
+<body>
+<div class="phone">
+
+<!-- STATUS BAR -->
+<div class="sb">
+  <span>9:41</span>
+  <div class="sb-notch"><div class="nc"></div><div style="width:6px;height:6px;background:#111;border-radius:50%;border:1.5px solid #222"></div></div>
+  <div class="sb-right">
+    <svg width="14" height="10" viewBox="0 0 14 10" fill="white"><rect x="0" y="6" width="2" height="4" rx="1"/><rect x="3" y="4" width="2" height="6" rx="1"/><rect x="6" y="2" width="2" height="8" rx="1"/><rect x="9" y="0" width="2" height="10" rx="1" opacity=".4"/></svg>
+    <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M7 2C9 2 10.8 2.8 12 4.1L13.2 2.9C11.7 1.4 9.4.5 7 .5S2.3 1.4.8 2.9L2 4.1C3.2 2.8 5 2 7 2Z" fill="white" opacity=".4"/><path d="M7 5C8.2 5 9.3 5.5 10.1 6.3L11.3 5.1C10.2 4 8.7 3.3 7 3.3S3.8 4 2.7 5.1L3.9 6.3C4.7 5.5 5.8 5 7 5Z" fill="white" opacity=".7"/><circle cx="7" cy="9" r="1.5" fill="white"/></svg>
+    <div style="display:flex;align-items:center;gap:1px">
+      <div style="width:19px;height:10px;border:1.5px solid rgba(255,255,255,.4);border-radius:3px;display:flex;align-items:center;padding:1px;"><div style="width:80%;height:100%;background:white;border-radius:1px;"></div></div>
+      <div style="width:2px;height:5px;background:rgba(255,255,255,.4);border-radius:0 1px 1px 0;margin-left:-1px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN CONTAINER -->
+<div class="sc-wrap">
+
+<!-- ░░░ SPLASH ░░░ -->
+<div id="splash" class="sc active" style="padding:0;">
+  <div id="splash" style="background:radial-gradient(ellipse at 20% 40%,rgba(0,200,150,.12),transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(59,130,246,.07),transparent 50%),var(--ink2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;min-height:844px;">
+    <div class="slogo">S</div>
+    <div class="stitle syne">Supply<span>Link</span></div>
+    <p class="ssub">Connecting supply chain providers<br>with businesses that need them — globally.</p>
+    <div class="sbtns">
+      <button class="btn" onclick="goTo('roleselect')">Get Started</button>
+      <button class="btn-o" onclick="quickLogin()">Sign In</button>
+    </div>
+    <p class="stag">By Gigaba &amp; Gaba Industries · Skyline IT &amp; Cloud</p>
+  </div>
+</div>
+
+<!-- ░░░ ROLE SELECT ░░░ -->
+<div id="roleselect" class="sc" style="padding:28px 18px;">
+  <div class="back" onclick="goTo('splash')">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Back
+  </div>
+  <div class="ph syne">Who are<br>you today?</div>
+  <p class="psub">Select your role to personalise your dashboard.</p>
+  <div class="rcard" onclick="selectRole('buyer',this)"><div class="rico" style="background:rgba(0,200,150,.12)">🏭</div><div class="rinfo"><h3>Buyer / Business</h3><p>Find trucks, warehouses &amp; logistics services</p></div></div>
+  <div class="rcard" onclick="selectRole('provider',this)"><div class="rico" style="background:rgba(59,130,246,.12)">🚛</div><div class="rinfo"><h3>Service Provider</h3><p>List your trucks, storage or logistics services</p></div></div>
+  <div class="rcard" onclick="selectRole('driver',this)"><div class="rico" style="background:rgba(245,158,11,.12)">👤</div><div class="rinfo"><h3>Driver</h3><p>View routes, update shipment statuses &amp; navigate</p></div></div>
+  <div class="rcard" onclick="selectRole('manager',this)"><div class="rico" style="background:rgba(139,92,246,.12)">📊</div><div class="rinfo"><h3>Operations Manager</h3><p>Monitor fleet, analytics, vendors &amp; supply chain</p></div></div>
+</div>
+
+<!-- ░░░ LOGIN ░░░ -->
+<div id="login" class="sc" style="padding:28px 18px;min-height:100%;background:var(--ink2);">
+  <div class="back" onclick="goTo('roleselect')">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Back
+  </div>
+  <div class="ph syne" id="loginTitle">Sign in as<br><span class="accent">Buyer</span></div>
+  <p class="psub">Enter your credentials to access your account.</p>
+  <label class="ilbl">Email address</label>
+  <input class="inp" id="emailInp" type="email" placeholder="you@company.com"/>
+  <label class="ilbl">Password</label>
+  <input class="inp" id="pwInp" type="password" placeholder="••••••••"/>
+  <p class="err-msg" id="errMsg">Invalid email or password. Please try again.</p>
+  <div class="div-row"><div class="div-line"></div><span class="div-txt">or</span><div class="div-line"></div></div>
+  <div class="bio-row">
+    <div class="bio" onclick="toast('Fingerprint authentication')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.7 2 6 4.7 6 8v3M12 2c3.3 0 6 2.7 6 6v3M8 11v5c0 2.2 1.8 4 4 4s4-1.8 4-4v-5M10 11c0-1.1.9-2 2-2s2 .9 2 2v5"/></svg> Fingerprint
+    </div>
+    <div class="bio" onclick="toast('Face ID authentication')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 9h.01M15 9h.01M8 13s1 2 4 2 4-2 4-2M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M3 17v2a2 2 0 002 2h2M17 21h2a2 2 0 002-2v-2"/></svg> Face ID
+    </div>
+    <div class="bio" onclick="toast('OTP sent to your phone')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81"/><path d="M1 1l22 22"/></svg> SMS OTP
+    </div>
+  </div>
+  <button class="btn" onclick="doLogin()">Sign In →</button>
+  <p style="text-align:center;margin-top:14px;font-size:12px;color:var(--mist)">No account? <span style="color:var(--g);cursor:pointer">Register</span></p>
+</div>
+
+<!-- ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+     MANAGER SCREENS
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ -->
+
+<!-- MGR DASHBOARD -->
+<div id="mgr-dash" class="sc" style="padding:22px 18px 16px;">
+  <div class="dhead">
+    <div><div style="font-size:12px;color:var(--mist)">Good morning 👋</div><div class="ph syne" style="margin-bottom:0">Pstg Gallant</div><div style="font-size:11px;color:var(--g);margin-top:2px;">Operations Manager</div></div>
+    <div class="nbell" onclick="navTo('mgr-notifications',null)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><div class="ndot2"></div></div>
+  </div>
+  <div class="col2" style="margin-bottom:10px;">
+    <div class="kpi"><div class="kpi-lbl">Active Shipments</div><div class="kpi-val syne">24</div><div class="kpi-chg up">↑ 4 today</div></div>
+    <div class="kpi"><div class="kpi-lbl">Pending Orders</div><div class="kpi-val syne">7</div><div class="kpi-chg warn">3 urgent</div></div>
+  </div>
+  <div class="col2" style="margin-bottom:18px;">
+    <div class="kpi"><div class="kpi-lbl">Fleet On Road</div><div class="kpi-val syne">18</div><div class="kpi-chg up">↑ 2 from yesterday</div></div>
+    <div class="kpi"><div class="kpi-lbl">On-Time Rate</div><div class="kpi-val syne">94<span style="font-size:14px">%</span></div><div class="kpi-chg up">↑ 2% this week</div></div>
+  </div>
+  <div class="sec syne">Quick Actions</div>
+  <div class="qa" style="margin-bottom:18px;">
+    <div class="qai" onclick="navToMgr('mgr-fleet')"><div class="qaico" style="background:rgba(0,200,150,.12)">🚛</div><span class="qalbl">Fleet</span></div>
+    <div class="qai" onclick="navToMgr('mgr-orders')"><div class="qaico" style="background:rgba(59,130,246,.12)">📦</div><span class="qalbl">Orders</span></div>
+    <div class="qai" onclick="navToMgr('mgr-analytics')"><div class="qaico" style="background:rgba(139,92,246,.12)">📊</div><span class="qalbl">Analytics</span></div>
+    <div class="qai" onclick="navToMgr('mgr-workforce')"><div class="qaico" style="background:rgba(245,158,11,.12)">👥</div><span class="qalbl">Workforce</span></div>
+  </div>
+  <div class="sec syne">Recent Activity <span class="sall" onclick="navToMgr('mgr-orders')">View all</span></div>
+  <div class="order-card" onclick="navToMgr('mgr-orders')">
+    <div class="order-top"><div><div class="order-id">#SHP-2024-0847</div><div class="order-sub">Durban → Johannesburg</div></div><span class="pill t">In Transit</span></div>
+    <div class="pbar"><div class="pfill" style="width:65%"></div></div>
+    <div class="order-meta"><span>Driver: Sipho N.</span><span>ETA 14:30</span></div>
+  </div>
+  <div class="order-card" onclick="navToMgr('mgr-orders')">
+    <div class="order-top"><div><div class="order-id">#SHP-2024-0848</div><div class="order-sub">Cape Town → Durban</div></div><span class="pill p">Pending</span></div>
+    <div class="pbar"><div class="pfill" style="width:10%;background:var(--amber)"></div></div>
+    <div class="order-meta"><span>Awaiting driver</span><span>No ETA</span></div>
+  </div>
+  <div class="order-card" onclick="navToMgr('mgr-orders')">
+    <div class="order-top"><div><div class="order-id">#SHP-2024-0846</div><div class="order-sub">Pretoria → Durban</div></div><span class="pill d">Delivered</span></div>
+    <div class="pbar"><div class="pfill" style="width:100%"></div></div>
+    <div class="order-meta"><span>Driver: Bongani D.</span><span>09:15 today</span></div>
+  </div>
+</div>
+
+<!-- MGR FLEET -->
+<div id="mgr-fleet" class="sc" style="padding:22px 18px;">
+  <div class="back" onclick="navToMgr('mgr-dash')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Dashboard</div>
+  <div class="ph syne">Fleet Management</div>
+  <p class="psub">18 vehicles active · 3 in maintenance</p>
+  <div class="col3" style="margin-bottom:18px;">
+    <div class="kpi"><div class="kpi-lbl">On Road</div><div class="kpi-val syne" style="font-size:20px">18</div></div>
+    <div class="kpi"><div class="kpi-lbl">Idle</div><div class="kpi-val syne" style="font-size:20px">4</div></div>
+    <div class="kpi"><div class="kpi-lbl">Maint.</div><div class="kpi-val syne" style="font-size:20px;color:var(--amber)">3</div></div>
+  </div>
+  <div class="sec syne">Active Fleet</div>
+  <div class="fleet-item" onclick="toast('Volvo FH16 — GPS tracking opened')">
+    <div class="fleet-ico" style="background:rgba(0,200,150,.12)">🚛</div>
+    <div class="fleet-info"><div class="fleet-name">Volvo FH16 · T-4421</div><div class="fleet-sub">Driver: Sipho N. · N3 Highway · 85km/h</div><div style="margin-top:5px"><span class="pill d" style="font-size:10px">Active</span></div></div>
+    <div style="text-align:right;font-size:11px;color:var(--mist)">Last service<br>Jan 2026</div>
+  </div>
+  <div class="fleet-item" onclick="toast('Mercedes Actros — details opened')">
+    <div class="fleet-ico" style="background:rgba(59,130,246,.12)">🚛</div>
+    <div class="fleet-info"><div class="fleet-name">Merc Actros · T-4398</div><div class="fleet-sub">Driver: Bongani D. · Delivered</div><div style="margin-top:5px"><span class="pill d" style="font-size:10px">Delivered</span></div></div>
+    <div style="text-align:right;font-size:11px;color:var(--mist)">Last service<br>Mar 2026</div>
+  </div>
+  <div class="fleet-item" onclick="toast('Scania R500 — maintenance scheduled')">
+    <div class="fleet-ico" style="background:rgba(245,158,11,.12)">🔧</div>
+    <div class="fleet-info"><div class="fleet-name">Scania R500 · T-4356</div><div class="fleet-sub">Under maintenance · Durban Depot</div><div style="margin-top:5px"><span class="pill p" style="font-size:10px">Maintenance</span></div></div>
+    <div style="text-align:right;font-size:11px;color:var(--mist)">Service due<br>Apr 2026</div>
+  </div>
+  <div class="fleet-item" onclick="toast('MAN TGX — inspection pending')">
+    <div class="fleet-ico" style="background:rgba(139,92,246,.12)">🚛</div>
+    <div class="fleet-info"><div class="fleet-name">MAN TGX · T-4312</div><div class="fleet-sub">Route: Joburg → Pretoria</div><div style="margin-top:5px"><span class="pill t" style="font-size:10px">In Transit</span></div></div>
+    <div style="text-align:right;font-size:11px;color:var(--mist)">Last service<br>Feb 2026</div>
+  </div>
+  <button class="btn" style="margin-top:8px;" onclick="toast('Add vehicle form opened')">+ Add Vehicle</button>
+</div>
+
+<!-- MGR ORDERS -->
+<div id="mgr-orders" class="sc" style="padding:22px 18px;">
+  <div class="back" onclick="navToMgr('mgr-dash')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Dashboard</div>
+  <div class="ph syne">Order Management</div>
+  <p class="psub">Full lifecycle from placement to delivery</p>
+  <div class="cats">
+    <div class="cp active" onclick="filterCat(this)">All (24)</div>
+    <div class="cp" onclick="filterCat(this)">In Transit</div>
+    <div class="cp" onclick="filterCat(this)">Pending</div>
+    <div class="cp" onclick="filterCat(this)">Delivered</div>
+    <div class="cp" onclick="filterCat(this)">Cancelled</div>
+  </div>
+  <div class="order-card" onclick="openOrderModal()">
+    <div class="order-top"><div><div class="order-id">#SHP-2024-0847</div><div class="order-sub">Durban → Johannesburg · 22 Ton</div></div><span class="pill t">In Transit</span></div>
+    <div class="pbar"><div class="pfill" style="width:65%"></div></div>
+    <div class="order-meta"><span>Driver: Sipho N.</span><span>ETA 14:30</span></div>
+  </div>
+  <div class="order-card" onclick="toast('Order #0848 — Assign driver')">
+    <div class="order-top"><div><div class="order-id">#SHP-2024-0848</div><div class="order-sub">Cape Town → Durban · 15 Ton</div></div><span class="pill p">Pending</span></div>
+    <div class="pbar"><div class="pfill" style="width:5%;background:var(--amber)"></div></div>
+    <div class="order-meta"><span>No driver assigned</span><span>Urgent</span></div>
+  </div>
+  <div class="order-card" onclick="toast('Order #0846 — POD attached')">
+    <div class="order-top"><div><div class="order-id">#SHP-2024-0846</div><div class="order-sub">Pretoria → Durban · 10 Ton</div></div><span class="pill d">Delivered</span></div>
+    <div class="pbar"><div class="pfill" style="width:100%"></div></div>
+    <div class="order-meta"><span>Driver: Bongani D.</span><span>09:15 today</span></div>
+  </div>
+  <div class="order-card" onclick="toast('Order #0844 — Return in progress')">
+    <div class="order-top"><div><div class="order-id">#SHP-2024-0844</div><div class="order-sub">Bloemfontein → Cape Town</div></div><span class="pill r">Returned</span></div>
+    <div class="pbar"><div class="pfill" style="width:40%;background:var(--red)"></div></div>
+    <div class="order-meta"><span>Reverse logistics</span><span>Return in progress</span></div>
+  </div>
+  <div class="order-card" onclick="toast('Order #0843 — Completed')">
+    <div class="order-top"><div><div class="order-id">#SHP-2024-0843</div><div class="order-sub">Durban → East London</div></div><span class="pill d">Delivered</span></div>
+    <div class="pbar"><div class="pfill" style="width:100%"></div></div>
+    <div class="order-meta"><span>Driver: Thabo M.</span><span>Yesterday 16:00</span></div>
+  </div>
+  <button class="btn" style="margin-top:8px;" onclick="toast('New order form opened')">+ Create Order</button>
+</div>
+
+<!-- MGR ANALYTICS -->
+<div id="mgr-analytics" class="sc" style="padding:22px 18px;">
+  <div class="back" onclick="navToMgr('mgr-dash')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Dashboard</div>
+  <div class="ph syne">Analytics &amp; BI</div>
+  <p class="psub">Performance insights · Updated live</p>
+  <div class="col2" style="margin-bottom:10px;">
+    <div class="kpi"><div class="kpi-lbl">Revenue (Month)</div><div class="kpi-val syne" style="font-size:20px">R 842K</div><div class="kpi-chg up">↑ 12%</div></div>
+    <div class="kpi"><div class="kpi-lbl">Cost Per KM</div><div class="kpi-val syne" style="font-size:20px">R 4.20</div><div class="kpi-chg dn">↑ 0.3% vs last</div></div>
+  </div>
+  <div class="col2" style="margin-bottom:18px;">
+    <div class="kpi"><div class="kpi-lbl">Avg Delivery Time</div><div class="kpi-val syne" style="font-size:20px">6.2h</div><div class="kpi-chg up">↓ 0.4h</div></div>
+    <div class="kpi"><div class="kpi-lbl">Customer Rating</div><div class="kpi-val syne" style="font-size:20px">4.8★</div><div class="kpi-chg up">↑ 0.1</div></div>
+  </div>
+  <div class="sec syne">Shipments This Week</div>
+  <div class="card" style="cursor:default;">
+    <div class="chart">
+      <div class="bar" style="height:40%"></div>
+      <div class="bar" style="height:65%"></div>
+      <div class="bar" style="height:55%"></div>
+      <div class="bar" style="height:80%"></div>
+      <div class="bar" style="height:70%"></div>
+      <div class="bar a" style="height:90%"></div>
+      <div class="bar a" style="height:75%"></div>
+    </div>
+    <div class="blbls"><span class="blbl">Mon</span><span class="blbl">Tue</span><span class="blbl">Wed</span><span class="blbl">Thu</span><span class="blbl">Fri</span><span class="blbl">Sat</span><span class="blbl">Sun</span></div>
+  </div>
+  <div class="sec syne" style="margin-top:14px;">Demand Forecast</div>
+  <div class="card" style="cursor:default;">
+    <div style="font-size:12px;color:var(--mist);margin-bottom:10px;">Predicted demand — next 4 weeks</div>
+    <div class="chart" style="height:60px;">
+      <div class="bar a" style="height:60%;opacity:.5"></div>
+      <div class="bar a" style="height:75%;opacity:.6"></div>
+      <div class="bar a" style="height:85%;opacity:.7"></div>
+      <div class="bar a" style="height:95%;opacity:.8"></div>
+    </div>
+    <div class="blbls"><span class="blbl">Wk 1</span><span class="blbl">Wk 2</span><span class="blbl">Wk 3</span><span class="blbl">Wk 4</span></div>
+    <div style="font-size:12px;color:var(--g);margin-top:8px;">↑ 18% volume increase predicted — Q2 peak</div>
+  </div>
+  <div class="sec syne" style="margin-top:14px;">KPIs</div>
+  <div class="card" style="cursor:default;">
+    <div class="od-row"><span class="od-lbl">On-Time Delivery Rate</span><span class="od-val accent">94%</span></div>
+    <div class="od-row"><span class="od-lbl">Order Fill Rate</span><span class="od-val accent">98.2%</span></div>
+    <div class="od-row"><span class="od-lbl">Warehouse Utilisation</span><span class="od-val" style="color:var(--amber)">82%</span></div>
+    <div class="od-row"><span class="od-lbl">Return Rate</span><span class="od-val" style="color:var(--red)">3.1%</span></div>
+    <div class="od-row"><span class="od-lbl">Carbon per Shipment</span><span class="od-val accent">12.4 kg CO₂</span></div>
+  </div>
+</div>
+
+<!-- MGR VENDORS -->
+<div id="mgr-vendors" class="sc" style="padding:22px 18px;">
+  <div class="back" onclick="navToMgr('mgr-dash')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Dashboard</div>
+  <div class="ph syne">Vendor Management</div>
+  <p class="psub">Supplier relationships &amp; performance</p>
+  <div class="vendor-card">
+    <div class="vendor-top"><div class="vendor-av" style="background:rgba(0,200,150,.12);color:var(--g)">PL</div><div><div class="vendor-name">Peak Logistics Ltd</div><div class="vendor-sub">Cold storage · Durban North</div><div class="rating">★★★★★ 4.9</div></div><span class="pill d" style="margin-left:auto">Active</span></div>
+    <div class="od-row"><span class="od-lbl">Contract Value</span><span class="od-val">R 280,000/yr</span></div>
+    <div class="od-row"><span class="od-lbl">Orders Completed</span><span class="od-val">142</span></div>
+    <div style="display:flex;gap:8px;margin-top:10px;"><button class="btn-sm" onclick="toast('Message Peak Logistics')">Message</button><button class="btn-sm out" onclick="toast('View contract')">Contract</button></div>
+  </div>
+  <div class="vendor-card">
+    <div class="vendor-top"><div class="vendor-av" style="background:rgba(59,130,246,.12);color:var(--blue)">TF</div><div><div class="vendor-name">Themba Fleet Services</div><div class="vendor-sub">Truck rental · Nationwide</div><div class="rating">★★★★☆ 4.6</div></div><span class="pill d" style="margin-left:auto">Active</span></div>
+    <div class="od-row"><span class="od-lbl">Contract Value</span><span class="od-val">R 190,000/yr</span></div>
+    <div class="od-row"><span class="od-lbl">Orders Completed</span><span class="od-val">87</span></div>
+    <div style="display:flex;gap:8px;margin-top:10px;"><button class="btn-sm" onclick="toast('Message Themba Fleet')">Message</button><button class="btn-sm out" onclick="toast('Renew contract')">Renew</button></div>
+  </div>
+  <div class="vendor-card">
+    <div class="vendor-top"><div class="vendor-av" style="background:rgba(245,158,11,.12);color:var(--amber)">SA</div><div><div class="vendor-name">SA Logistics Inspectors</div><div class="vendor-sub">Inspection agency · Certified</div><div class="rating">★★★★★ 5.0</div></div><span class="pill d" style="margin-left:auto">Active</span></div>
+    <div class="od-row"><span class="od-lbl">Inspections Done</span><span class="od-val">36</span></div>
+    <div style="display:flex;gap:8px;margin-top:10px;"><button class="btn-sm" onclick="toast('Request inspection')">Request</button><button class="btn-sm out" onclick="toast('View reports')">Reports</button></div>
+  </div>
+  <button class="btn" style="margin-top:8px;" onclick="toast('Add vendor form opened')">+ Add Vendor</button>
+</div>
+
+<!-- MGR RISK -->
+<div id="mgr-risk" class="sc" style="padding:22px 18px;">
+  <div class="back" onclick="navToMgr('mgr-dash')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Dashboard</div>
+  <div class="ph syne">Risk Management</div>
+  <p class="psub">Identify &amp; mitigate supply chain risks</p>
+  <div class="col3" style="margin-bottom:18px;">
+    <div class="kpi" style="border-left:3px solid var(--red)"><div class="kpi-lbl">High Risk</div><div class="kpi-val syne" style="font-size:20px;color:var(--red)">2</div></div>
+    <div class="kpi" style="border-left:3px solid var(--amber)"><div class="kpi-lbl">Medium</div><div class="kpi-val syne" style="font-size:20px;color:var(--amber)">5</div></div>
+    <div class="kpi" style="border-left:3px solid var(--g)"><div class="kpi-lbl">Low</div><div class="kpi-val syne" style="font-size:20px">8</div></div>
+  </div>
+  <div class="sec syne">Active Risks</div>
+  <div class="risk-item"><div class="risk-title">⚠️ N3 Road Closure Risk</div><div class="risk-desc">Roadworks reported between PMB and Joburg. 3 active routes affected.</div><button class="btn-sm" style="margin-top:8px;" onclick="toast('Reroute options opened')">Reroute</button></div>
+  <div class="risk-item"><div class="risk-title">⚠️ Driver Shortage — Cape Region</div><div class="risk-desc">2 upcoming deliveries with no assigned driver. Escalation required.</div><button class="btn-sm" style="margin-top:8px;" onclick="toast('Driver assignment opened')">Assign</button></div>
+  <div class="risk-item med"><div class="risk-title">🔶 Fuel Price Increase</div><div class="risk-desc">Projected 8% fuel increase next month. Review pricing contracts.</div><button class="btn-sm out" style="margin-top:8px;" onclick="toast('Financial impact report')">Review</button></div>
+  <div class="risk-item med"><div class="risk-title">🔶 Vendor Contract Expiry</div><div class="risk-desc">Peak Logistics contract expires in 45 days. Renewal needed.</div><button class="btn-sm out" style="margin-top:8px;" onclick="toast('Contract renewal form')">Renew</button></div>
+  <div class="risk-item low"><div class="risk-title">✅ Weather Conditions</div><div class="risk-desc">All current routes have clear weather conditions.</div></div>
+</div>
+
+<!-- MGR WORKFORCE -->
+<div id="mgr-workforce" class="sc" style="padding:22px 18px;">
+  <div class="back" onclick="navToMgr('mgr-dash')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Dashboard</div>
+  <div class="ph syne">Workforce Management</div>
+  <p class="psub">Labour efficiency &amp; scheduling</p>
+  <div class="col3" style="margin-bottom:18px;">
+    <div class="kpi"><div class="kpi-lbl">On Duty</div><div class="kpi-val syne" style="font-size:20px">14</div></div>
+    <div class="kpi"><div class="kpi-lbl">Off Duty</div><div class="kpi-val syne" style="font-size:20px">6</div></div>
+    <div class="kpi"><div class="kpi-lbl">Available</div><div class="kpi-val syne" style="font-size:20px;color:var(--g)">4</div></div>
+  </div>
+  <div class="sec syne">Driver Roster</div>
+  <div class="card" style="cursor:default;">
+    <div class="worker-row"><div class="wav" style="background:rgba(0,200,150,.12);color:var(--g)">SN</div><div class="winfo"><div class="wname">Sipho Nkosi</div><div class="wrole">Long-haul driver · T-4421</div></div><span class="wstatus up">On Route</span></div>
+    <div class="worker-row"><div class="wav" style="background:rgba(59,130,246,.12);color:var(--blue)">BD</div><div class="winfo"><div class="wname">Bongani Dlamini</div><div class="wrole">Driver · T-4398</div></div><span class="wstatus accent">Available</span></div>
+    <div class="worker-row"><div class="wav" style="background:rgba(245,158,11,.12);color:var(--amber)">TM</div><div class="winfo"><div class="wname">Thabo Molefe</div><div class="wrole">Driver · T-4312</div></div><span class="wstatus up">On Route</span></div>
+    <div class="worker-row"><div class="wav" style="background:rgba(139,92,246,.12);color:#A78BFA">LN</div><div class="winfo"><div class="wname">Lungelo Ntuli</div><div class="wrole">Warehouse · Durban</div></div><span class="wstatus" style="color:var(--mist)">Off Duty</span></div>
+    <div class="worker-row"><div class="wav" style="background:rgba(239,68,68,.12);color:var(--red)">NZ</div><div class="winfo"><div class="wname">Nandi Zulu</div><div class="wrole">Dispatcher</div></div><span class="wstatus up">On Duty</span></div>
+  </div>
+  <button class="btn" style="margin-top:12px;" onclick="toast('Add team member form')">+ Add Team Member</button>
+</div>
+
+<!-- MGR ESG -->
+<div id="mgr-esg" class="sc" style="padding:22px 18px;">
+  <div class="back" onclick="navToMgr('mgr-dash')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Dashboard</div>
+  <div class="ph syne">ESG &amp; Sustainability</div>
+  <p class="psub">Environmental, Social &amp; Governance tracking</p>
+  <div style="display:flex;align-items:center;gap:20px;margin-bottom:20px;">
+    <div class="esg-ring"><div class="esg-val syne">78</div><div class="esg-lbl">ESG Score</div></div>
+    <div style="flex:1;">
+      <div style="margin-bottom:8px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span>Environmental</span><span class="accent">82%</span></div><div class="pbar"><div class="pfill" style="width:82%"></div></div></div>
+      <div style="margin-bottom:8px;"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span>Social</span><span class="accent">74%</span></div><div class="pbar"><div class="pfill" style="width:74%"></div></div></div>
+      <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;"><span>Governance</span><span class="accent">80%</span></div><div class="pbar"><div class="pfill" style="width:80%"></div></div></div>
+    </div>
+  </div>
+  <div class="sec syne">Carbon Footprint</div>
+  <div class="card" style="cursor:default;">
+    <div class="od-row"><span class="od-lbl">Total CO₂ this month</span><span class="od-val">18.4 tonnes</span></div>
+    <div class="od-row"><span class="od-lbl">Per shipment avg</span><span class="od-val">12.4 kg CO₂</span></div>
+    <div class="od-row"><span class="od-lbl">vs last month</span><span class="od-val up">↓ 6% reduction</span></div>
+    <div class="od-row"><span class="od-lbl">Annual target</span><span class="od-val accent">On track ✓</span></div>
+  </div>
+  <div class="sec syne" style="margin-top:14px;">Ethical Sourcing</div>
+  <div class="card" style="cursor:default;">
+    <div class="od-row"><span class="od-lbl">Verified suppliers</span><span class="od-val accent">14 / 16</span></div>
+    <div class="od-row"><span class="od-lbl">Pending verification</span><span class="od-val warn">2 suppliers</span></div>
+    <div class="od-row"><span class="od-lbl">Last audit</span><span class="od-val">15 Mar 2026</span></div>
+  </div>
+</div>
+
+<!-- MGR INVENTORY -->
+<div id="mgr-inventory" class="sc" style="padding:22px 18px;">
+  <div class="back" onclick="navToMgr('mgr-dash')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Dashboard</div>
+  <div class="ph syne">Inventory Management</div>
+  <p class="psub">Real-time stock &amp; replenishment</p>
+  <div class="col2" style="margin-bottom:18px;">
+    <div class="kpi"><div class="kpi-lbl">Total SKUs</div><div class="kpi-val syne" style="font-size:20px">1,248</div></div>
+    <div class="kpi"><div class="kpi-lbl">Low Stock Alerts</div><div class="kpi-val syne" style="font-size:20px;color:var(--amber)">6</div></div>
+  </div>
+  <div class="sec syne">Stock Overview</div>
+  <div class="card" style="cursor:default;">
+    <div class="inv-row"><div class="inv-ico">📦</div><div class="inv-info"><div class="inv-name">Industrial Pallets</div><div class="inv-sub">Durban Warehouse A</div></div><div class="inv-qty accent">842</div></div>
+    <div class="inv-row"><div class="inv-ico">🔩</div><div class="inv-info"><div class="inv-name">Spare Parts — Volvo</div><div class="inv-sub">Maintenance Store</div></div><div class="inv-qty warn">12 ⚠️</div></div>
+    <div class="inv-row"><div class="inv-ico">🛢</div><div class="inv-info"><div class="inv-name">Diesel Stock (Litres)</div><div class="inv-sub">Depot — Durban</div></div><div class="inv-qty accent">4,200L</div></div>
+    <div class="inv-row"><div class="inv-ico">📋</div><div class="inv-info"><div class="inv-name">POD Forms</div><div class="inv-sub">Admin Store</div></div><div class="inv-qty" style="color:var(--red)">8 ⚠️</div></div>
+    <div class="inv-row"><div class="inv-ico">🏷</div><div class="inv-info"><div class="inv-name">Barcode Labels</div><div class="inv-sub">Warehouse B</div></div><div class="inv-qty accent">3,600</div></div>
+  </div>
+  <button class="btn" style="margin-top:12px;" onclick="toast('Auto-replenishment triggered for low stock items')">Auto-Replenish Low Stock</button>
+</div>
+
+<!-- MGR NOTIFICATIONS -->
+<div id="mgr-notifications" class="sc" style="padding:22px 18px;">
+  <div class="back" onclick="navToMgr('mgr-dash')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Dashboard</div>
+  <div class="ph syne">Notifications</div>
+  <p class="psub">Real-time alerts &amp; updates</p>
+  <div class="card" onclick="toast('Shipment #0847 — opened')"><div class="row"><span class="pill t">Transit</span><span style="font-size:10px;color:var(--mist)">14:22</span></div><div style="font-size:13px;font-weight:500;margin-top:6px;">#SHP-0847 is 65% complete</div><div style="font-size:12px;color:var(--mist);margin-top:2px;">Driver Sipho N. updated status · ETA 14:30</div></div>
+  <div class="card" onclick="toast('Risk alert — rerouting options')"><div class="row"><span class="pill r">Risk</span><span style="font-size:10px;color:var(--mist)">13:10</span></div><div style="font-size:13px;font-weight:500;margin-top:6px;">⚠️ N3 road closure risk detected</div><div style="font-size:12px;color:var(--mist);margin-top:2px;">3 active shipments may be affected</div></div>
+  <div class="card" onclick="toast('Order #0848 — assign driver')"><div class="row"><span class="pill p">Action</span><span style="font-size:10px;color:var(--mist)">11:45</span></div><div style="font-size:13px;font-weight:500;margin-top:6px;">Order #0848 needs driver assignment</div><div style="font-size:12px;color:var(--mist);margin-top:2px;">Cape Town pickup scheduled for 08:00 tomorrow</div></div>
+  <div class="card" onclick="toast('Inspection report — T-4421 viewed')"><div class="row"><span class="pill d">Inspection</span><span style="font-size:10px;color:var(--mist)">09:40</span></div><div style="font-size:13px;font-weight:500;margin-top:6px;">T-4421 inspection report ready</div><div style="font-size:12px;color:var(--mist);margin-top:2px;">SA Logistics Inspectors — All clear ✓</div></div>
+  <div class="card" onclick="toast('Low stock — replenish')"><div class="row"><span class="pill p">Inventory</span><span style="font-size:10px;color:var(--mist)">08:15</span></div><div style="font-size:13px;font-weight:500;margin-top:6px;">Low stock: Spare Parts (12 units)</div><div style="font-size:12px;color:var(--mist);margin-top:2px;">Replenishment recommended</div></div>
+</div>
+
+<!-- MGR PROFILE -->
+<div id="mgr-profile" class="sc" style="padding:22px 18px;">
+  <div style="display:flex;flex-direction:column;align-items:center;padding:10px 0 22px;text-align:center;">
+    <div class="pav">PG<div class="pvbadge">✓</div></div>
+    <div class="ph syne" style="margin-bottom:2px;">Pstg Gallant</div>
+    <div style="font-size:12px;color:var(--g);">Operations Manager</div>
+    <div style="font-size:11px;color:var(--mist);margin-top:2px;">pstgallant@gmail.com</div>
+  </div>
+  <div class="pstats" style="margin-bottom:18px;">
+    <div class="pst"><div class="pstv syne">48</div><div class="pstl">Orders</div></div>
+    <div class="pst"><div class="pstv syne">24</div><div class="pstl">Active</div></div>
+    <div class="pst"><div class="pstv syne">4.9</div><div class="pstl">Rating</div></div>
+  </div>
+  <div class="ml">Management</div>
+  <div class="mi" onclick="navToMgr('mgr-fleet')"><div class="mico" style="background:rgba(0,200,150,.1)">🚛</div><div class="mt2">Fleet Management</div><div class="mx">›</div></div>
+  <div class="mi" onclick="navToMgr('mgr-vendors')"><div class="mico" style="background:rgba(59,130,246,.1)">🤝</div><div class="mt2">Vendor Management</div><div class="mx">›</div></div>
+  <div class="mi" onclick="navToMgr('mgr-risk')"><div class="mico" style="background:rgba(239,68,68,.1)">⚠️</div><div class="mt2">Risk Management</div><div class="mx">›</div></div>
+  <div class="mi" onclick="navToMgr('mgr-esg')"><div class="mico" style="background:rgba(0,200,150,.1)">🌱</div><div class="mt2">ESG &amp; Sustainability</div><div class="mx">›</div></div>
+  <div class="mi" onclick="navToMgr('mgr-inventory')"><div class="mico" style="background:rgba(245,158,11,.1)">📦</div><div class="mt2">Inventory</div><div class="mx">›</div></div>
+  <div class="ml" style="margin-top:16px;">Account</div>
+  <div class="mi" onclick="toast('Edit profile opened')"><div class="mico" style="background:rgba(255,255,255,.06)">👤</div><div class="mt2">Edit Profile</div><div class="mx">›</div></div>
+  <div class="mi" onclick="toast('Language: English (SA)')"><div class="mico" style="background:rgba(255,255,255,.06)">🌐</div><div class="mt2">Language &amp; Region</div><div class="mx">›</div></div>
+  <div class="mi" onclick="toast('Security settings')"><div class="mico" style="background:rgba(255,255,255,.06)">🔒</div><div class="mt2">Security</div><div class="mx">›</div></div>
+  <button class="lout" style="margin-top:16px;" onclick="signOut()">Sign Out</button>
+  <p style="text-align:center;font-size:10px;color:var(--mist);margin-top:14px;">SupplyLink v1.0 · Built by Skyline IT &amp; Cloud</p>
+</div>
+
+<!-- ░░░░░░░░░░░░░░░░░░░░░░░░
+     DRIVER SCREENS
+░░░░░░░░░░░░░░░░░░░░░░░░ -->
+
+<!-- DRIVER DASHBOARD -->
+<div id="drv-dash" class="sc" style="padding:22px 18px;">
+  <div class="dhead">
+    <div><div style="font-size:12px;color:var(--mist)">Good morning 👋</div><div class="ph syne" style="margin-bottom:0">Sipho Nkosi</div><div style="font-size:11px;color:var(--blue);margin-top:2px;">Driver · T-4421</div></div>
+    <div class="nbell" onclick="toast('1 new notification')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><div class="ndot2"></div></div>
+  </div>
+  <div class="route-card">
+    <div class="row"><div class="bold syne">Today's Route</div><span class="pill t">Active</span></div>
+    <div class="route-stops">
+      <div class="rs"><div class="rs-dot s"></div><div class="rs-info"><div style="font-size:13px;font-weight:500;">Durban Port — Pickup</div><div class="rs-sub">Completed 07:15</div></div></div>
+      <div><div class="rs-line" style="margin-left:4px;"></div></div>
+      <div class="rs"><div class="rs-dot" style="background:var(--blue);width:10px;height:10px;border-radius:50%;flex-shrink:0;box-shadow:0 0 10px var(--blue)"></div><div class="rs-info"><div style="font-size:13px;font-weight:500;">N3 — Pietermaritzburg</div><div class="rs-sub">Current position · 85km/h</div></div></div>
+      <div><div class="rs-line" style="margin-left:4px;"></div></div>
+      <div class="rs"><div class="rs-dot e"></div><div class="rs-info"><div style="font-size:13px;font-weight:500;">Johannesburg Depot</div><div class="rs-sub">ETA 14:30</div></div></div>
+    </div>
+  </div>
+  <div class="col3" style="margin-bottom:18px;">
+    <div class="kpi"><div class="kpi-lbl">Distance</div><div class="kpi-val syne" style="font-size:18px">280km</div></div>
+    <div class="kpi"><div class="kpi-lbl">Speed</div><div class="kpi-val syne" style="font-size:18px">85km/h</div></div>
+    <div class="kpi"><div class="kpi-lbl">ETA</div><div class="kpi-val syne" style="font-size:18px;color:var(--g)">14:30</div></div>
+  </div>
+  <div class="sec syne">One-Tap Status Update</div>
+  <div class="sa-grid">
+    <button class="sa-btn pu" onclick="toast('Status: Pickup confirmed ✓')">📍 Pickup</button>
+    <button class="sa-btn tr" onclick="toast('Status: In Transit ✓')">🚛 In Transit</button>
+    <button class="sa-btn de" onclick="toast('POD required — upload proof')">✅ Delivered</button>
+  </div>
+</div>
+
+<!-- DRIVER NAVIGATION -->
+<div id="drv-nav" class="sc" style="padding:22px 18px;">
+  <div class="back" onclick="goTo('drv-dash')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Dashboard</div>
+  <div class="ph syne">Navigation</div>
+  <p class="psub">Turn-by-turn route guidance</p>
+  <div class="map" style="height:220px;">
+    <div class="mgrid"></div>
+    <div class="mroute"></div>
+    <div class="mdot s"></div><div class="mdot c"></div><div class="mdot e"></div>
+    <div class="mlbl">🛰 GPS Live</div>
+    <div style="position:absolute;top:12px;left:12px;font-size:10px;background:rgba(0,0,0,.6);padding:3px 7px;border-radius:5px;color:var(--mist)">N3 · 280km remaining</div>
+    <div style="position:absolute;bottom:35px;left:50%;transform:translateX(-50%);background:rgba(59,130,246,.9);padding:6px 14px;border-radius:8px;font-size:11px;font-weight:600;">Keep left in 2.1km</div>
+  </div>
+  <div class="card" style="cursor:default;margin-bottom:10px;">
+    <div class="row" style="margin-bottom:8px;"><div class="bold syne" style="font-size:14px;">Next Instruction</div><span style="font-size:12px;color:var(--blue)">N3 Highway</span></div>
+    <div style="font-size:22px;font-family:'Syne',sans-serif;font-weight:800;color:var(--g);margin-bottom:4px;">↑ Continue straight · 2.1 km</div>
+    <div style="font-size:12px;color:var(--mist);">Then: Take exit toward Johannesburg CBD</div>
+  </div>
+  <div class="col3">
+    <div class="kpi"><div class="kpi-lbl">Remaining</div><div class="kpi-val syne" style="font-size:16px">280km</div></div>
+    <div class="kpi"><div class="kpi-lbl">ETA</div><div class="kpi-val syne" style="font-size:16px">14:30</div></div>
+    <div class="kpi"><div class="kpi-lbl">Speed</div><div class="kpi-val syne" style="font-size:16px">85km/h</div></div>
+  </div>
+  <button class="btn" style="margin-top:12px;" onclick="toast('Rerouting via alternate path...')">Reroute</button>
+</div>
+
+<!-- DRIVER POD -->
+<div id="drv-pod" class="sc" style="padding:22px 18px;">
+  <div class="back" onclick="goTo('drv-dash')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Dashboard</div>
+  <div class="ph syne">Proof of Delivery</div>
+  <p class="psub">Capture &amp; submit delivery confirmation</p>
+  <div class="card" style="cursor:default;margin-bottom:12px;">
+    <div class="bold syne" style="margin-bottom:10px;">Order #SHP-2024-0847</div>
+    <div class="od-row"><span class="od-lbl">Recipient</span><span class="od-val">Joburg Depot Ltd</span></div>
+    <div class="od-row"><span class="od-lbl">Address</span><span class="od-val">14 Industrial Ave, JHB</span></div>
+    <div class="od-row"><span class="od-lbl">Load</span><span class="od-val">22 Ton Freight</span></div>
+    <div class="od-row"><span class="od-lbl">Status</span><span class="od-val warn">Pending POD</span></div>
+  </div>
+  <div class="sec syne">Upload Evidence</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
+    <div onclick="toast('Camera opened — photo upload')" style="padding:16px 8px;background:rgba(255,255,255,.04);border:1px dashed var(--border2);border-radius:12px;text-align:center;cursor:pointer;transition:all .2s;">
+      <div style="font-size:26px;margin-bottom:6px;">📷</div><div style="font-size:11px;color:var(--mist);">Photo</div>
+    </div>
+    <div onclick="toast('Signature pad opened')" style="padding:16px 8px;background:rgba(255,255,255,.04);border:1px dashed var(--border2);border-radius:12px;text-align:center;cursor:pointer;transition:all .2s;">
+      <div style="font-size:26px;margin-bottom:6px;">✍️</div><div style="font-size:11px;color:var(--mist);">Signature</div>
+    </div>
+    <div onclick="toast('QR scanner activated')" style="padding:16px 8px;background:rgba(255,255,255,.04);border:1px dashed var(--border2);border-radius:12px;text-align:center;cursor:pointer;transition:all .2s;">
+      <div style="font-size:26px;margin-bottom:6px;">📲</div><div style="font-size:11px;color:var(--mist);">Scan QR</div>
+    </div>
+  </div>
+  <label class="ilbl">Delivery Notes (optional)</label>
+  <input class="inp" placeholder="e.g. Left with security guard..."/>
+  <button class="btn" onclick="toast('POD submitted successfully ✓')">Submit POD →</button>
+</div>
+
+<!-- DRIVER DOCUMENTS -->
+<div id="drv-docs" class="sc" style="padding:22px 18px;">
+  <div class="back" onclick="goTo('drv-dash')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Dashboard</div>
+  <div class="ph syne">My Documents</div>
+  <p class="psub">Licences, permits &amp; vehicle docs</p>
+  <div class="card" style="cursor:default;">
+    <div class="doc-row"><div class="doc-ico" style="background:rgba(0,200,150,.12)">🪪</div><div class="doc-info"><div class="doc-name">Driver's Licence</div><div class="doc-sub">Valid until Dec 2027</div></div><span class="pill d">Valid</span></div>
+    <div class="doc-row"><div class="doc-ico" style="background:rgba(59,130,246,.12)">📋</div><div class="doc-info"><div class="doc-name">PDP Certificate</div><div class="doc-sub">Valid until Jun 2026</div></div><span class="pill d">Valid</span></div>
+    <div class="doc-row"><div class="doc-ico" style="background:rgba(245,158,11,.12)">🚛</div><div class="doc-info"><div class="doc-name">Vehicle Registration</div><div class="doc-sub">T-4421 · Expires Aug 2026</div></div><span class="pill d">Valid</span></div>
+    <div class="doc-row"><div class="doc-ico" style="background:rgba(139,92,246,.12)">🔧</div><div class="doc-info"><div class="doc-name">Roadworthy Certificate</div><div class="doc-sub">Last: Jan 2026 · Next: Jul 2026</div></div><span class="pill d">Valid</span></div>
+    <div class="doc-row"><div class="doc-ico" style="background:rgba(239,68,68,.12)">🛡</div><div class="doc-info"><div class="doc-name">Insurance Certificate</div><div class="doc-sub">Expires: 30 Apr 2026 ⚠️</div></div><span class="pill p">Renew</span></div>
+  </div>
+  <button class="btn" style="margin-top:12px;" onclick="toast('Upload new document')">+ Upload Document</button>
+</div>
+
+<!-- DRIVER PROFILE -->
+<div id="drv-profile" class="sc" style="padding:22px 18px;">
+  <div style="display:flex;flex-direction:column;align-items:center;padding:10px 0 22px;text-align:center;">
+    <div class="pav" style="background:linear-gradient(135deg,var(--blue),#1D4ED8)">SN<div class="pvbadge">✓</div></div>
+    <div class="ph syne" style="margin-bottom:2px;">Sipho Nkosi</div>
+    <div style="font-size:12px;color:var(--blue);">Driver · Vehicle T-4421</div>
+  </div>
+  <div class="pstats" style="margin-bottom:18px;">
+    <div class="pst"><div class="pstv syne" style="color:var(--blue)">142</div><div class="pstl">Deliveries</div></div>
+    <div class="pst"><div class="pstv syne" style="color:var(--blue)">98%</div><div class="pstl">On-Time</div></div>
+    <div class="pst"><div class="pstv syne" style="color:var(--blue)">4.8★</div><div class="pstl">Rating</div></div>
+  </div>
+  <div class="ml">Quick Links</div>
+  <div class="mi" onclick="goTo('drv-nav')"><div class="mico" style="background:rgba(59,130,246,.1)">🗺</div><div class="mt2">Navigation</div><div class="mx">›</div></div>
+  <div class="mi" onclick="goTo('drv-pod')"><div class="mico" style="background:rgba(0,200,150,.1)">📋</div><div class="mt2">Proof of Delivery</div><div class="mx">›</div></div>
+  <div class="mi" onclick="goTo('drv-docs')"><div class="mico" style="background:rgba(139,92,246,.1)">📁</div><div class="mt2">My Documents</div><div class="mx">›</div></div>
+  <div class="mi" onclick="toast('Performance report opened')"><div class="mico" style="background:rgba(245,158,11,.1)">📊</div><div class="mt2">My Performance</div><div class="mx">›</div></div>
+  <div class="ml" style="margin-top:14px;">Settings</div>
+  <div class="mi" onclick="toast('Language: Zulu selected')"><div class="mico" style="background:rgba(255,255,255,.06)">🌐</div><div class="mt2">Language</div><div class="mx">›</div></div>
+  <div class="mi" onclick="toast('Offline mode: Enabled ✓')"><div class="mico" style="background:rgba(255,255,255,.06)">📶</div><div class="mt2">Offline Mode</div><div class="mx">›</div></div>
+  <button class="lout" style="margin-top:16px;" onclick="signOut()">Sign Out</button>
+</div>
+
+<!-- ░░░░░░░░░░░░░░░░░░░░░░
+     BUYER SCREENS
+░░░░░░░░░░░░░░░░░░░░░░ -->
+
+<!-- BUYER DASHBOARD -->
+<div id="buy-dash" class="sc" style="padding:22px 18px;">
+  <div class="dhead">
+    <div><div style="font-size:12px;color:var(--mist)">Good morning 👋</div><div class="ph syne" style="margin-bottom:0">Themba M.</div><div style="font-size:11px;color:var(--amber);margin-top:2px;">Buyer Account</div></div>
+    <div class="nbell" onclick="toast('2 new notifications')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><div class="ndot2"></div></div>
+  </div>
+  <div class="col2" style="margin-bottom:18px;">
+    <div class="kpi"><div class="kpi-lbl">Active Orders</div><div class="kpi-val syne">3</div><div class="kpi-chg up">1 arriving today</div></div>
+    <div class="kpi"><div class="kpi-lbl">Total Spend</div><div class="kpi-val syne" style="font-size:18px">R 84K</div><div class="kpi-chg up">This month</div></div>
+  </div>
+  <div class="sec syne">Quick Actions</div>
+  <div class="qa" style="margin-bottom:18px;">
+    <div class="qai" onclick="goTo('buy-marketplace')"><div class="qaico" style="background:rgba(0,200,150,.12)">🔍</div><span class="qalbl">Find Service</span></div>
+    <div class="qai" onclick="goTo('buy-orders')"><div class="qaico" style="background:rgba(59,130,246,.12)">📦</div><span class="qalbl">My Orders</span></div>
+    <div class="qai" onclick="goTo('buy-track')"><div class="qaico" style="background:rgba(139,92,246,.12)">📍</div><span class="qalbl">Track</span></div>
+    <div class="qai" onclick="toast('QR scanner opened')"><div class="qaico" style="background:rgba(245,158,11,.12)">📷</div><span class="qalbl">Scan QR</span></div>
+  </div>
+  <div class="sec syne">Active Orders <span class="sall" onclick="goTo('buy-orders')">See all</span></div>
+  <div class="order-card" onclick="goTo('buy-track')">
+    <div class="order-top"><div><div class="order-id">#ORD-2024-0847</div><div class="order-sub">Transport · Durban → JHB</div></div><span class="pill t">In Transit</span></div>
+    <div class="pbar"><div class="pfill" style="width:65%"></div></div>
+    <div class="order-meta"><span>ETA 14:30 today</span><span>R 4,500</span></div>
+  </div>
+  <div class="order-card" onclick="toast('Order #0845 — warehouse confirmed')">
+    <div class="order-top"><div><div class="order-id">#ORD-2024-0845</div><div class="order-sub">Warehouse · Durban North</div></div><span class="pill d">Active</span></div>
+    <div class="pbar"><div class="pfill" style="width:100%"></div></div>
+    <div class="order-meta"><span>Monthly rental</span><span>R 28,000/mo</span></div>
+  </div>
+</div>
+
+<!-- BUYER MARKETPLACE -->
+<div id="buy-marketplace" class="sc" style="padding:22px 18px;">
+  <div class="ph syne">Marketplace</div>
+  <p class="psub">Find trucks, warehouses &amp; services</p>
+  <div class="srch"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--mist)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg><input placeholder="Search listings…"/></div>
+  <div class="cats">
+    <div class="cp active" onclick="filterCat(this)">All</div>
+    <div class="cp" onclick="filterCat(this)">🚛 Trucks</div>
+    <div class="cp" onclick="filterCat(this)">🏭 Warehouses</div>
+    <div class="cp" onclick="filterCat(this)">📦 Storage</div>
+    <div class="cp" onclick="filterCat(this)">🔍 Inspection</div>
+    <div class="cp" onclick="filterCat(this)">🚢 Freight</div>
+  </div>
+  <div class="lcard" onclick="toast('Volvo FH16 — full listing opened')">
+    <div class="ltop"><div class="limg" style="background:rgba(59,130,246,.1)">🚛</div><div><div class="lname">Volvo FH16 — 22 Ton</div><div class="vbadge">✓ Verified</div><div class="ldesc">Long-haul freight. Last service Jan 2026. GPS fitted.</div></div></div>
+    <div class="ltags"><span class="tag">For Rent</span><span class="tag">Durban</span><span class="tag">22 Ton</span><span class="tag">Available</span></div>
+    <div class="lfoot"><div class="lprice">R 4,500<span>/day</span></div><button class="btn-sm" onclick="event.stopPropagation();goTo('buy-chat')">Contact</button></div>
+  </div>
+  <div class="lcard" onclick="toast('Cold Storage Warehouse — full listing')">
+    <div class="ltop"><div class="limg" style="background:rgba(0,200,150,.1)">🏭</div><div><div class="lname">Cold Storage Warehouse</div><div class="vbadge">✓ Agency Inspected</div><div class="ldesc">2,400m² refrigerated. Durban North. 24/7 security.</div></div></div>
+    <div class="ltags"><span class="tag">Durban North</span><span class="tag">2,400m²</span><span class="tag">Cold Chain</span></div>
+    <div class="lfoot"><div class="lprice">R 28,000<span>/mo</span></div><button class="btn-sm" onclick="event.stopPropagation();goTo('buy-chat')">Contact</button></div>
+  </div>
+  <div class="lcard" onclick="toast('SA Logistics Inspectors — details')">
+    <div class="ltop"><div class="limg" style="background:rgba(139,92,246,.1)">🔍</div><div><div class="lname">SA Logistics Inspectors</div><div class="vbadge">✓ Certified Agency</div><div class="ldesc">Third-party inspections nationwide.</div></div></div>
+    <div class="ltags"><span class="tag">Inspection</span><span class="tag">Nationwide</span></div>
+    <div class="lfoot"><div class="lprice">R 800<span>/inspection</span></div><button class="btn-sm" onclick="event.stopPropagation();goTo('buy-chat')">Contact</button></div>
+  </div>
+</div>
+
+<!-- BUYER ORDERS -->
+<div id="buy-orders" class="sc" style="padding:22px 18px;">
+  <div class="back" onclick="goTo('buy-dash')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Dashboard</div>
+  <div class="ph syne">My Orders</div>
+  <p class="psub">All your bookings in one place</p>
+  <div class="cats"><div class="cp active" onclick="filterCat(this)">All</div><div class="cp" onclick="filterCat(this)">Active</div><div class="cp" onclick="filterCat(this)">Completed</div><div class="cp" onclick="filterCat(this)">Cancelled</div></div>
+  <div class="order-card" onclick="goTo('buy-track')"><div class="order-top"><div><div class="order-id">#ORD-2024-0847</div><div class="order-sub">Transport · Durban → JHB · 22 Ton</div></div><span class="pill t">In Transit</span></div><div class="pbar"><div class="pfill" style="width:65%"></div></div><div class="order-meta"><span>ETA 14:30</span><span>R 4,500</span></div></div>
+  <div class="order-card" onclick="toast('Warehouse order — active')"><div class="order-top"><div><div class="order-id">#ORD-2024-0845</div><div class="order-sub">Warehouse · 2,400m² · Durban North</div></div><span class="pill d">Active</span></div><div class="pbar"><div class="pfill" style="width:100%"></div></div><div class="order-meta"><span>Monthly rental</span><span>R 28,000/mo</span></div></div>
+  <div class="order-card" onclick="toast('Order completed — POD available')"><div class="order-top"><div><div class="order-id">#ORD-2024-0840</div><div class="order-sub">Transport · Cape Town → Durban</div></div><span class="pill d">Delivered</span></div><div class="pbar"><div class="pfill" style="width:100%"></div></div><div class="order-meta"><span>Delivered: 15 Apr</span><span>R 3,800</span></div></div>
+  <div class="order-card" onclick="toast('Returns request — initiated')"><div class="order-top"><div><div class="order-id">#ORD-2024-0835</div><div class="order-sub">Return · Joburg → Durban</div></div><span class="pill r">Returned</span></div><div class="pbar"><div class="pfill" style="width:50%;background:var(--red)"></div></div><div class="order-meta"><span>Return in progress</span><span>R 2,100</span></div></div>
+  <button class="btn" style="margin-top:8px;" onclick="goTo('buy-marketplace')">+ New Order</button>
+</div>
+
+<!-- BUYER TRACKING -->
+<div id="buy-track" class="sc" style="padding:22px 18px;">
+  <div class="back" onclick="goTo('buy-dash')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Dashboard</div>
+  <div class="ph syne">Live Tracking</div>
+  <p class="psub">Order #ORD-2024-0847</p>
+  <div class="map"><div class="mgrid"></div><div class="mroute"></div><div class="mdot s"></div><div class="mdot c"></div><div class="mdot e"></div><div class="mlbl">🛰 GPS Live</div><div style="position:absolute;top:12px;left:12px;font-size:10px;background:rgba(0,0,0,.6);padding:3px 7px;border-radius:5px;color:var(--mist)">Durban → Joburg</div></div>
+  <div class="card" style="cursor:default;">
+    <div class="row" style="margin-bottom:12px;"><div><div class="bold syne">#SHP-2024-0847</div><div style="font-size:11px;color:var(--mist);margin-top:2px;">Driver: Sipho N. · T-4421</div></div><span class="pill t">In Transit</span></div>
+    <div class="tl">
+      <div class="tli"><div class="tldt dn"></div><div><div class="tlh">Order Confirmed</div><div class="tlp">Yesterday 16:00</div></div></div>
+      <div class="tli"><div class="tldt dn"></div><div><div class="tlh">Picked Up — Durban Port</div><div class="tlp">Today 07:15</div></div></div>
+      <div class="tli"><div class="tldt ac"></div><div><div class="tlh">In Transit · N3 Highway</div><div class="tlp">Now · 65% · ETA 14:30</div></div></div>
+      <div class="tli"><div class="tldt pd"></div><div><div class="tlh">Delivery — Johannesburg</div><div class="tlp">ETA 14:30 today</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- BUYER CHAT -->
+<div id="buy-chat" class="sc" style="padding:0;display:flex;flex-direction:column;min-height:100%;">
+  <div style="padding:18px 18px 14px;border-bottom:1px solid var(--border);"><div class="ph syne" style="margin-bottom:2px;">Messages</div><div style="font-size:12px;color:var(--mist);">4 conversations</div></div>
+  <div style="flex:1;overflow-y:auto;">
+    <div class="chi" onclick="openConvo('Peak Logistics','PL','rgba(59,130,246,.15)','#60A5FA')"><div class="chav" style="background:rgba(59,130,246,.15);color:#60A5FA">PL</div><div class="chin"><div class="chn">Peak Logistics Ltd</div><div class="chp">Warehouse available from Monday</div></div><div class="chmeta"><div class="cht">11:05</div><div class="badge">1</div></div></div>
+    <div class="chi" onclick="openConvo('Themba Fleet','TF','rgba(245,158,11,.15)','var(--amber)')"><div class="chav" style="background:rgba(245,158,11,.15);color:var(--amber)">TF</div><div class="chin"><div class="chn">Themba Fleet Services</div><div class="chp">Actros confirmed for your booking</div></div><div class="chmeta"><div class="cht">Yesterday</div></div></div>
+    <div class="chi" onclick="openConvo('SA Inspectors','SI','rgba(139,92,246,.15)','#A78BFA')"><div class="chav" style="background:rgba(139,92,246,.15);color:#A78BFA">SI</div><div class="chin"><div class="chn">SA Logistics Inspectors</div><div class="chp">Inspection report ready ✓</div></div><div class="chmeta"><div class="cht">09:40</div></div></div>
+    <div class="chi" onclick="openConvo('SupplyLink Support','SL','rgba(0,200,150,.12)','var(--g)')"><div class="chav" style="background:rgba(0,200,150,.12);color:var(--g)">SL</div><div class="chin"><div class="chn">SupplyLink Support</div><div class="chp">Your account is verified ✓</div></div><div class="chmeta"><div class="cht">Mon</div></div></div>
+  </div>
+  <div class="convo" id="convoScreen"><div class="convoh"><div class="back" style="margin:0" onclick="closeConvo()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div><div class="chav" id="convoAv" style="width:36px;height:36px;font-size:13px;border-radius:11px;"></div><div><div id="convoNm" style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;"></div><div style="font-size:10px;color:var(--g)">● Online</div></div></div><div class="convom" id="convoMsgs"></div><div class="convoi"><input class="convo-inp" id="msgInp" placeholder="Type a message…" onkeydown="if(event.key==='Enter')sendMsg()"/><button class="sbtn" onclick="sendMsg()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div></div>
+</div>
+
+<!-- BUYER PROFILE -->
+<div id="buy-profile" class="sc" style="padding:22px 18px;">
+  <div style="display:flex;flex-direction:column;align-items:center;padding:10px 0 22px;text-align:center;">
+    <div class="pav" style="background:linear-gradient(135deg,var(--amber),#D97706)">TM<div class="pvbadge">✓</div></div>
+    <div class="ph syne" style="margin-bottom:2px;">Themba Mokoena</div>
+    <div style="font-size:12px;color:var(--amber);">Buyer Account</div>
+  </div>
+  <div class="pstats" style="margin-bottom:18px;">
+    <div class="pst"><div class="pstv syne" style="color:var(--amber)">12</div><div class="pstl">Orders</div></div>
+    <div class="pst"><div class="pstv syne" style="color:var(--amber)">3</div><div class="pstl">Active</div></div>
+    <div class="pst"><div class="pstv syne" style="color:var(--amber)">R84K</div><div class="pstl">Spend</div></div>
+  </div>
+  <div class="ml">Account</div>
+  <div class="mi" onclick="toast('Edit profile')"><div class="mico" style="background:rgba(255,255,255,.06)">👤</div><div class="mt2">Edit Profile</div><div class="mx">›</div></div>
+  <div class="mi" onclick="toast('Payment methods')"><div class="mico" style="background:rgba(0,200,150,.1)">💳</div><div class="mt2">Payment Methods</div><div class="mx">›</div></div>
+  <div class="mi" onclick="toast('Address book')"><div class="mico" style="background:rgba(59,130,246,.1)">📍</div><div class="mt2">Saved Addresses</div><div class="mx">›</div></div>
+  <div class="mi" onclick="toast('Notification settings')"><div class="mico" style="background:rgba(245,158,11,.1)">🔔</div><div class="mt2">Notifications</div><div class="mx">›</div></div>
+  <button class="lout" style="margin-top:16px;" onclick="signOut()">Sign Out</button>
+</div>
+
+<!-- ░░░░░░░░░░░░░░░░░░░░░░░░░
+     PROVIDER SCREENS
+░░░░░░░░░░░░░░░░░░░░░░░░░ -->
+
+<!-- PROVIDER DASHBOARD -->
+<div id="prv-dash" class="sc" style="padding:22px 18px;">
+  <div class="dhead">
+    <div><div style="font-size:12px;color:var(--mist)">Good morning 👋</div><div class="ph syne" style="margin-bottom:0">Sipho Provider</div><div style="font-size:11px;color:var(--purple);margin-top:2px;">Service Provider</div></div>
+    <div class="nbell" onclick="toast('3 new enquiries')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg><div class="ndot2"></div></div>
+  </div>
+  <div class="col2" style="margin-bottom:10px;">
+    <div class="kpi"><div class="kpi-lbl">Active Listings</div><div class="kpi-val syne">5</div><div class="kpi-chg up">2 new enquiries</div></div>
+    <div class="kpi"><div class="kpi-lbl">This Month</div><div class="kpi-val syne" style="font-size:18px">R 42K</div><div class="kpi-chg up">↑ 18%</div></div>
+  </div>
+  <div class="col2" style="margin-bottom:18px;">
+    <div class="kpi"><div class="kpi-lbl">Completed Jobs</div><div class="kpi-val syne">28</div><div class="kpi-chg up">This month</div></div>
+    <div class="kpi"><div class="kpi-lbl">Rating</div><div class="kpi-val syne">4.8★</div><div class="kpi-chg up">↑ 0.1 this week</div></div>
+  </div>
+  <div class="sec syne">Quick Actions</div>
+  <div class="qa" style="margin-bottom:18px;">
+    <div class="qai" onclick="goTo('prv-listings')"><div class="qaico" style="background:rgba(139,92,246,.12)">📋</div><span class="qalbl">Listings</span></div>
+    <div class="qai" onclick="goTo('prv-bookings')"><div class="qaico" style="background:rgba(0,200,150,.12)">📅</div><span class="qalbl">Bookings</span></div>
+    <div class="qai" onclick="goTo('prv-chat')"><div class="qaico" style="background:rgba(59,130,246,.12)">💬</div><span class="qalbl">Messages</span></div>
+    <div class="qai" onclick="toast('QR scanner — verify booking')"><div class="qaico" style="background:rgba(245,158,11,.12)">📷</div><span class="qalbl">Verify</span></div>
+  </div>
+  <div class="sec syne">New Enquiries <span class="sall" onclick="goTo('prv-bookings')">See all</span></div>
+  <div class="order-card" onclick="goTo('prv-bookings')"><div class="order-top"><div><div class="order-id">Enquiry #E-2841</div><div class="order-sub">Volvo FH16 — 3 day rental</div></div><span class="pill pu">New</span></div><div style="font-size:12px;color:var(--mist);margin-top:6px;">Client: Themba M. · R 13,500 total · Start: Mon</div></div>
+  <div class="order-card" onclick="goTo('prv-bookings')"><div class="order-top"><div><div class="order-id">Enquiry #E-2839</div><div class="order-sub">Warehouse inspection request</div></div><span class="pill pu">New</span></div><div style="font-size:12px;color:var(--mist);margin-top:6px;">Client: Peak Corp · Inspection this Friday</div></div>
+</div>
+
+<!-- PROVIDER LISTINGS -->
+<div id="prv-listings" class="sc" style="padding:22px 18px;">
+  <div class="back" onclick="goTo('prv-dash')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Dashboard</div>
+  <div class="ph syne">My Listings</div>
+  <p class="psub">Manage your services &amp; vehicles</p>
+  <div class="lcard" onclick="toast('Edit Volvo FH16 listing')">
+    <div class="ltop"><div class="limg" style="background:rgba(59,130,246,.1)">🚛</div><div><div class="lname">Volvo FH16 — 22 Ton</div><div class="vbadge">✓ Verified</div><div class="ldesc">Last service: Jan 2026</div></div></div>
+    <div class="ltags"><span class="tag">For Rent</span><span class="tag">Active</span><span class="tag">3 enquiries</span></div>
+    <div class="lfoot"><div class="lprice">R 4,500<span>/day</span></div><div style="display:flex;gap:6px;"><button class="btn-sm out" onclick="event.stopPropagation();toast('Editing listing...')">Edit</button><button class="btn-sm" onclick="event.stopPropagation();toast('Listing paused')">Pause</button></div></div>
+  </div>
+  <div class="lcard" onclick="toast('Edit warehouse listing')">
+    <div class="ltop"><div class="limg" style="background:rgba(0,200,150,.1)">🏭</div><div><div class="lname">Cold Storage — 2,400m²</div><div class="vbadge">✓ Inspected</div><div class="ldesc">Durban North · Full details</div></div></div>
+    <div class="ltags"><span class="tag">Available</span><span class="tag">1 enquiry</span></div>
+    <div class="lfoot"><div class="lprice">R 28,000<span>/mo</span></div><div style="display:flex;gap:6px;"><button class="btn-sm out" onclick="event.stopPropagation();toast('Edit listing')">Edit</button></div></div>
+  </div>
+  <div class="lcard" onclick="toast('Edit Actros for sale listing')">
+    <div class="ltop"><div class="limg" style="background:rgba(245,158,11,.1)">🚛</div><div><div class="lname">Mercedes Actros 2022</div><div class="vbadge">✓ Verified</div><div class="ldesc">For sale · 180,000km · Excellent</div></div></div>
+    <div class="ltags"><span class="tag">For Sale</span><span class="tag">Active</span></div>
+    <div class="lfoot"><div class="lprice">R 1.2M<span>once-off</span></div><div style="display:flex;gap:6px;"><button class="btn-sm out" onclick="event.stopPropagation();toast('Edit listing')">Edit</button></div></div>
+  </div>
+  <button class="btn" style="margin-top:8px;" onclick="toast('Add new listing form opened')">+ Add New Listing</button>
+</div>
+
+<!-- PROVIDER BOOKINGS -->
+<div id="prv-bookings" class="sc" style="padding:22px 18px;">
+  <div class="back" onclick="goTo('prv-dash')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg> Dashboard</div>
+  <div class="ph syne">Bookings</div>
+  <p class="psub">Manage enquiries &amp; confirmed jobs</p>
+  <div class="cats"><div class="cp active" onclick="filterCat(this)">All</div><div class="cp" onclick="filterCat(this)">New</div><div class="cp" onclick="filterCat(this)">Confirmed</div><div class="cp" onclick="filterCat(this)">Completed</div></div>
+  <div class="order-card">
+    <div class="order-top"><div><div class="order-id">Enquiry #E-2841</div><div class="order-sub">Volvo FH16 · 3 day rental</div></div><span class="pill pu">New</span></div>
+    <div style="font-size:12px;color:var(--mist);margin:8px 0;">Client: Themba M. · Mon–Wed · R 13,500 total</div>
+    <div style="display:flex;gap:8px;"><button class="btn-sm" onclick="toast('Booking #E-2841 accepted ✓')">Accept</button><button class="btn-sm out" onclick="goTo('prv-chat')">Message</button><button class="btn-sm out" onclick="toast('Booking declined')">Decline</button></div>
+  </div>
+  <div class="order-card">
+    <div class="order-top"><div><div class="order-id">Enquiry #E-2839</div><div class="order-sub">Warehouse inspection · Friday</div></div><span class="pill pu">New</span></div>
+    <div style="font-size:12px;color:var(--mist);margin:8px 0;">Client: Peak Corp · R 800</div>
+    <div style="display:flex;gap:8px;"><button class="btn-sm" onclick="toast('Booking #E-2839 accepted ✓')">Accept</button><button class="btn-sm out" onclick="goTo('prv-chat')">Message</button></div>
+  </div>
+  <div class="order-card">
+    <div class="order-top"><div><div class="order-id">Booking #B-2820</div><div class="order-sub">Cold Storage rental · April</div></div><span class="pill d">Confirmed</span></div>
+    <div style="font-size:12px;color:var(--mist);margin:8px 0;">Client: Durban Traders · 1 month · R 28,000</div>
+    <div style="display:flex;gap:8px;"><button class="btn-sm out" onclick="goTo('prv-chat')">Message</button></div>
+  </div>
+</div>
+
+<!-- PROVIDER CHAT -->
+<div id="prv-chat" class="sc" style="padding:0;display:flex;flex-direction:column;min-height:100%;">
+  <div style="padding:18px 18px 14px;border-bottom:1px solid var(--border);"><div class="ph syne" style="margin-bottom:2px;">Messages</div><div style="font-size:12px;color:var(--mist);">3 conversations</div></div>
+  <div style="flex:1;overflow-y:auto;">
+    <div class="chi" onclick="openConvo('Themba M.','TM','rgba(245,158,11,.15)','var(--amber)')"><div class="chav" style="background:rgba(245,158,11,.15);color:var(--amber)">TM</div><div class="chin"><div class="chn">Themba M. — Buyer</div><div class="chp">Is the Volvo available Monday?</div></div><div class="chmeta"><div class="cht">14:10</div><div class="badge">2</div></div></div>
+    <div class="chi" onclick="openConvo('Peak Corp','PC','rgba(59,130,246,.15)','#60A5FA')"><div class="chav" style="background:rgba(59,130,246,.15);color:#60A5FA">PC</div><div class="chin"><div class="chn">Peak Corp — Buyer</div><div class="chp">Can we do inspection Friday 9am?</div></div><div class="chmeta"><div class="cht">11:30</div></div></div>
+    <div class="chi" onclick="openConvo('SupplyLink','SL','rgba(0,200,150,.12)','var(--g)')"><div class="chav" style="background:rgba(0,200,150,.12);color:var(--g)">SL</div><div class="chin"><div class="chn">SupplyLink Support</div><div class="chp">Your listing has been approved ✓</div></div><div class="chmeta"><div class="cht">Mon</div></div></div>
+  </div>
+  <div class="convo" id="convoScreen2"><div class="convoh"><div class="back" style="margin:0" onclick="closeConvo2()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div><div class="chav" id="convoAv2" style="width:36px;height:36px;font-size:13px;border-radius:11px;"></div><div><div id="convoNm2" style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;"></div><div style="font-size:10px;color:var(--g)">● Online</div></div></div><div class="convom" id="convoMsgs2"></div><div class="convoi"><input class="convo-inp" id="msgInp2" placeholder="Type a message…" onkeydown="if(event.key==='Enter')sendMsg2()"/><button class="sbtn" onclick="sendMsg2()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div></div>
+</div>
+
+<!-- PROVIDER PROFILE -->
+<div id="prv-profile" class="sc" style="padding:22px 18px;">
+  <div style="display:flex;flex-direction:column;align-items:center;padding:10px 0 22px;text-align:center;">
+    <div class="pav" style="background:linear-gradient(135deg,var(--purple),#6D28D9)">SP<div class="pvbadge">✓</div></div>
+    <div class="ph syne" style="margin-bottom:2px;">Sipho Provider</div>
+    <div style="font-size:12px;color:var(--purple);">Service Provider</div>
+  </div>
+  <div class="pstats" style="margin-bottom:18px;">
+    <div class="pst"><div class="pstv syne" style="color:var(--purple)">28</div><div class="pstl">Jobs</div></div>
+    <div class="pst"><div class="pstv syne" style="color:var(--purple)">5</div><div class="pstl">Listings</div></div>
+    <div class="pst"><div class="pstv syne" style="color:var(--purple)">4.8★</div><div class="pstl">Rating</div></div>
+  </div>
+  <div class="ml">Provider Tools</div>
+  <div class="mi" onclick="goTo('prv-listings')"><div class="mico" style="background:rgba(139,92,246,.1)">📋</div><div class="mt2">My Listings</div><div class="mx">›</div></div>
+  <div class="mi" onclick="goTo('prv-bookings')"><div class="mico" style="background:rgba(0,200,150,.1)">📅</div><div class="mt2">Bookings</div><div class="mx">›</div></div>
+  <div class="mi" onclick="toast('Earnings report opened')"><div class="mico" style="background:rgba(245,158,11,.1)">💰</div><div class="mt2">Earnings</div><div class="mx">›</div></div>
+  <div class="mi" onclick="toast('Reviews & ratings')"><div class="mico" style="background:rgba(59,130,246,.1)">⭐</div><div class="mt2">Reviews</div><div class="mx">›</div></div>
+  <div class="ml" style="margin-top:14px;">Account</div>
+  <div class="mi" onclick="toast('Edit business profile')"><div class="mico" style="background:rgba(255,255,255,.06)">🏢</div><div class="mt2">Business Profile</div><div class="mx">›</div></div>
+  <div class="mi" onclick="toast('Verification docs')"><div class="mico" style="background:rgba(255,255,255,.06)">🛡</div><div class="mt2">Verification</div><div class="mx">›</div></div>
+  <button class="lout" style="margin-top:16px;" onclick="signOut()">Sign Out</button>
+</div>
+
+</div><!-- /sc-wrap -->
+
+<!-- BOTTOM NAV -->
+<nav class="bnav" id="bnav" style="display:none;"></nav>
+
+<!-- MODAL -->
+<div class="modal-wrap" id="modalWrap" onclick="closeModal(event)">
+  <div class="modal" id="modalContent">
+    <div class="modal-handle"></div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toastEl">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--g)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+  <span id="toastTxt"></span>
+</div>
+</div><!-- /phone -->
+
+<script>
+// ─── STATE ───
+let cur = 'splash', role = 'buyer', toastTimer;
+
+const USERS = {
+  manager: { email:'pstgallant@gmail.com', pw:'123456789' },
+  buyer:   { email:'buyer@test.com',        pw:'test123' },
+  driver:  { email:'driver@test.com',       pw:'test123' },
+  provider:{ email:'provider@test.com',     pw:'test123' },
+};
+
+const NAV_CFG = {
+  manager: [
+    {id:'mgr-dash',  ico:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',  lbl:'Home'},
+    {id:'mgr-orders',ico:'<path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>',lbl:'Orders'},
+    {id:'mgr-analytics',ico:'<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>',lbl:'Analytics'},
+    {id:'mgr-fleet', ico:'<rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 8v3h-7V8zM1 21h20M5 21v-5M19 21v-5"/>',lbl:'Fleet'},
+    {id:'mgr-profile',ico:'<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>',lbl:'Profile'},
+  ],
+  driver: [
+    {id:'drv-dash', ico:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',lbl:'Home'},
+    {id:'drv-nav',  ico:'<polygon points="3 11 22 2 13 21 11 13 3 11"/>',lbl:'Navigate'},
+    {id:'drv-pod',  ico:'<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>',lbl:'POD'},
+    {id:'drv-docs', ico:'<path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/>',lbl:'Docs'},
+    {id:'drv-profile',ico:'<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>',lbl:'Profile'},
+  ],
+  buyer: [
+    {id:'buy-dash',       ico:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',lbl:'Home'},
+    {id:'buy-marketplace',ico:'<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',lbl:'Market'},
+    {id:'buy-track',      ico:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>',lbl:'Track'},
+    {id:'buy-chat',       ico:'<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>',lbl:'Chat'},
+    {id:'buy-profile',    ico:'<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>',lbl:'Profile'},
+  ],
+  provider: [
+    {id:'prv-dash',     ico:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',lbl:'Home'},
+    {id:'prv-listings', ico:'<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>',lbl:'Listings'},
+    {id:'prv-bookings', ico:'<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',lbl:'Bookings'},
+    {id:'prv-chat',     ico:'<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>',lbl:'Chat'},
+    {id:'prv-profile',  ico:'<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>',lbl:'Profile'},
+  ]
+};
+
+// ─── NAVIGATION ───
+function goTo(id) {
+  const prev = document.getElementById(cur);
+  const next = document.getElementById(id);
+  if (!next) return;
+  if (prev) prev.classList.remove('active');
+  next.classList.add('active');
+  cur = id;
+}
+
+function navTo(id, el) {
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('active'));
+  if (el) el.classList.add('active');
+  goTo(id);
+  // sync active nav dot
+  document.querySelectorAll('.ni').forEach(n => {
+    if (n.dataset.id === id) n.classList.add('active');
+  });
+}
+
+function navToMgr(id) { goTo(id); syncNav(id); }
+
+function syncNav(id) {
+  document.querySelectorAll('.ni').forEach(n => {
+    n.classList.toggle('active', n.dataset.id === id);
+  });
+}
+
+// ─── ROLE SELECT ───
+function selectRole(r, el) {
+  role = r;
+  document.querySelectorAll('.rcard').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  const lbls = { buyer:'Buyer', provider:'Service Provider', driver:'Driver', manager:'Operations Manager' };
+  document.getElementById('loginTitle').innerHTML = `Sign in as<br><span class="accent">${lbls[r]}</span>`;
+  setTimeout(() => goTo('login'), 180);
+}
+
+function quickLogin() {
+  document.getElementById('loginTitle').innerHTML = `Welcome<br><span class="accent">back</span>`;
+  goTo('login');
+}
+
+// ─── LOGIN ───
+function doLogin() {
+  const email = document.getElementById('emailInp').value.trim().toLowerCase();
+  const pw = document.getElementById('pwInp').value;
+  const errEl = document.getElementById('errMsg');
+
+  // Check manager credentials specifically
+  if (email === USERS.manager.email && pw === USERS.manager.pw) {
+    role = 'manager';
+  } else if (email === USERS.buyer.email && pw === USERS.buyer.pw) {
+    role = 'buyer';
+  } else if (email === USERS.driver.email && pw === USERS.driver.pw) {
+    role = 'driver';
+  } else if (email === USERS.provider.email && pw === USERS.provider.pw) {
+    role = 'provider';
+  } else if (pw.length >= 6) {
+    // Demo: any email + 6+ char password logs in with selected role
+  } else {
+    errEl.style.display = 'block';
+    return;
+  }
+
+  errEl.style.display = 'none';
+  buildNav(role);
+  const dash = { manager:'mgr-dash', driver:'drv-dash', buyer:'buy-dash', provider:'prv-dash' }[role];
+  goTo(dash);
+  syncNav(dash);
+  toast('Signed in successfully ✓');
+}
+
+// ─── BUILD NAV ───
+function buildNav(r) {
+  const nav = document.getElementById('bnav');
+  nav.innerHTML = '';
+  nav.style.display = 'flex';
+  NAV_CFG[r].forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'ni' + (i === 0 ? ' active' : '');
+    div.dataset.id = item.id;
+    div.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${item.ico}</svg>${item.lbl}<div class="ndot"></div>`;
+    div.onclick = () => navTo(item.id, div);
+    nav.appendChild(div);
+  });
+}
+
+// ─── SIGN OUT ───
+function signOut() {
+  document.getElementById('bnav').style.display = 'none';
+  document.getElementById('emailInp').value = '';
+  document.getElementById('pwInp').value = '';
+  goTo('splash');
+  toast('Signed out successfully');
+}
+
+// ─── FILTER CATS ───
+function filterCat(el) {
+  el.closest('.cats').querySelectorAll('.cp').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ─── ORDER MODAL ───
+function openOrderModal() {
+  document.getElementById('modalBody').innerHTML = `
+    <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:4px;">#SHP-2024-0847</div>
+    <div style="font-size:12px;color:var(--mist);margin-bottom:16px;">Durban → Johannesburg · In Transit</div>
+    <div class="od-row"><span class="od-lbl">Driver</span><span class="od-val">Sipho Nkosi</span></div>
+    <div class="od-row"><span class="od-lbl">Vehicle</span><span class="od-val">Volvo FH16 · T-4421</span></div>
+    <div class="od-row"><span class="od-lbl">Load</span><span class="od-val">22 Ton Freight</span></div>
+    <div class="od-row"><span class="od-lbl">Distance</span><span class="od-val">580 km</span></div>
+    <div class="od-row"><span class="od-lbl">ETA</span><span class="od-val" style="color:var(--g)">14:30 today</span></div>
+    <div class="od-row"><span class="od-lbl">Status</span><span class="pill t">In Transit</span></div>
+    <div style="display:flex;gap:8px;margin-top:16px;">
+      <button class="btn" onclick="toast('Opening live tracking');closeModal()" style="flex:1;">Track Live</button>
+      <button class="btn-o" onclick="toast('Message driver opened');closeModal()" style="flex:1;margin-top:0;">Message Driver</button>
+    </div>
+  `;
+  document.getElementById('modalWrap').classList.add('open');
+}
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modalWrap')) {
+    document.getElementById('modalWrap').classList.remove('open');
+  }
+}
+
+// ─── CHAT (Buyer) ───
+const chatHistory = {
+  'Peak Logistics': [{me:false,t:"Good day. We have cold storage available from Monday, 2,400m².",time:"10:40"},{me:true,t:"Perfect, that works for us. What's the monthly rate?",time:"10:42"},{me:false,t:"Warehouse available from Monday.",time:"11:05"}],
+  'Themba Fleet':   [{me:false,t:"Your Actros booking is confirmed for February.",time:"Yesterday"},{me:true,t:"Great, thank you. Is the service history available?",time:"Yesterday"},{me:false,t:"The Actros is confirmed for your Feb booking.",time:"Yesterday"}],
+  'SA Inspectors':  [{me:true,t:"We need an inspection on truck unit #T-4421.",time:"09:00"},{me:false,t:"We can do it Friday morning. Inspection report ready ✓",time:"09:40"}],
+  'SupplyLink':     [{me:false,t:"Welcome to SupplyLink! Your account has been verified ✓",time:"Mon"}],
+};
+const chatHistory2 = {
+  'Themba M.':  [{me:false,t:"Hi, is the Volvo FH16 available from Monday?",time:"14:05"},{me:true,t:"Yes, it's available. 3 days at R 4,500/day = R 13,500.",time:"14:08"},{me:false,t:"Is the Volvo available Monday?",time:"14:10"}],
+  'Peak Corp':  [{me:false,t:"We need a warehouse inspection this Friday. Is 9am OK?",time:"11:25"},{me:true,t:"Friday at 9am works. We'll send a confirmation.",time:"11:28"},{me:false,t:"Can we do inspection Friday 9am?",time:"11:30"}],
+  'SupplyLink': [{me:false,t:"Your listing has been approved ✓ You're now live on the marketplace.",time:"Mon"}],
+};
+
+function openConvo(name, initials, bg, color) {
+  const sc = document.getElementById('convoScreen');
+  const av = document.getElementById('convoAv');
+  av.textContent = initials; av.style.background = bg; av.style.color = color;
+  document.getElementById('convoNm').textContent = name;
+  const msgs = document.getElementById('convoMsgs');
+  msgs.innerHTML = '';
+  (chatHistory[name]||[{me:false,t:"Hi! How can I help you today?",time:"Now"}]).forEach(m => {
+    const d = document.createElement('div');
+    d.innerHTML = `<div class="msg ${m.me?'m':'t'}">${m.t}</div><div class="mt" style="text-align:${m.me?'right':'left'}">${m.time}</div>`;
+    msgs.appendChild(d);
+  });
+  sc.classList.add('open');
+  setTimeout(()=>msgs.scrollTop=msgs.scrollHeight,100);
+}
+function closeConvo() { document.getElementById('convoScreen').classList.remove('open'); }
+
+function openConvo2(name, initials, bg, color) {
+  const sc = document.getElementById('convoScreen2');
+  const av = document.getElementById('convoAv2');
+  av.textContent = initials; av.style.background = bg; av.style.color = color;
+  document.getElementById('convoNm2').textContent = name;
+  const msgs = document.getElementById('convoMsgs2');
+  msgs.innerHTML = '';
+  (chatHistory2[name]||[{me:false,t:"Hello! Interested in your listing.",time:"Now"}]).forEach(m => {
+    const d = document.createElement('div');
+    d.innerHTML = `<div class="msg ${m.me?'m':'t'}">${m.t}</div><div class="mt" style="text-align:${m.me?'right':'left'}">${m.time}</div>`;
+    msgs.appendChild(d);
+  });
+  sc.classList.add('open');
+  setTimeout(()=>msgs.scrollTop=msgs.scrollHeight,100);
+}
+function closeConvo2() { document.getElementById('convoScreen2').classList.remove('open'); }
+
+function sendMsg() {
+  const inp = document.getElementById('msgInp');
+  const text = inp.value.trim(); if(!text) return;
+  const msgs = document.getElementById('convoMsgs');
+  const now = new Date(); const t = now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
+  const d = document.createElement('div');
+  d.innerHTML = `<div class="msg m">${text}</div><div class="mt" style="text-align:right">${t}</div>`;
+  msgs.appendChild(d); inp.value = ''; msgs.scrollTop = msgs.scrollHeight;
+  const replies = ["Got it, thanks!","Understood, will update shortly.","Sure, let me check and confirm.","Received ✓","On it!"];
+  setTimeout(()=>{
+    const r = document.createElement('div');
+    r.innerHTML = `<div class="msg t">${replies[Math.floor(Math.random()*replies.length)]}</div><div class="mt">${t}</div>`;
+    msgs.appendChild(r); msgs.scrollTop=msgs.scrollHeight;
+  },1200);
+}
+
+function sendMsg2() {
+  const inp = document.getElementById('msgInp2');
+  const text = inp.value.trim(); if(!text) return;
+  const msgs = document.getElementById('convoMsgs2');
+  const now = new Date(); const t = now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
+  const d = document.createElement('div');
+  d.innerHTML = `<div class="msg m">${text}</div><div class="mt" style="text-align:right">${t}</div>`;
+  msgs.appendChild(d); inp.value = ''; msgs.scrollTop = msgs.scrollHeight;
+  const replies = ["Thanks for reaching out!","Will confirm shortly.","Sounds good!","Yes, that works for us.","Let me check availability."];
+  setTimeout(()=>{
+    const r = document.createElement('div');
+    r.innerHTML = `<div class="msg t">${replies[Math.floor(Math.random()*replies.length)]}</div><div class="mt">${t}</div>`;
+    msgs.appendChild(r); msgs.scrollTop=msgs.scrollHeight;
+  },1200);
+}
+
+// ─── MGR CHAT (within manager nav) ───
+// Manager uses same convo screen logic but accessed via separate nav
+function openMgrChat() {
+  // handled by mgr-chat screen below
+}
+
+// ─── TOAST ───
+function toast(msg) {
+  const el = document.getElementById('toastEl');
+  document.getElementById('toastTxt').textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.classList.remove('show'), 2600);
+}
+</script>
+</body>
+</html>
