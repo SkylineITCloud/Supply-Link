@@ -405,6 +405,16 @@ body{background:#060810;font-family:'DM Sans',sans-serif;color:var(--white);min-
   </div>
   <button class="btn" onclick="doLogin()">Sign In →</button>
   <p style="text-align:center;margin-top:14px;font-size:12px;color:var(--mist)">No account? <span style="color:var(--g);cursor:pointer">Register</span></p>
+
+  <!-- DEMO CREDENTIALS PANEL -->
+  <div style="margin-top:20px;border:1px solid rgba(0,200,150,.2);border-radius:var(--r);overflow:hidden;">
+    <div style="background:rgba(0,200,150,.08);padding:10px 14px;display:flex;align-items:center;gap:7px;border-bottom:1px solid rgba(0,200,150,.15);">
+      <span style="font-size:13px;">🔑</span>
+      <span style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--g);">Demo Access Credentials</span>
+      <span style="font-size:10px;color:var(--mist);margin-left:auto;">Tap to auto-fill</span>
+    </div>
+    <div id="credList" style="padding:6px 0;"></div>
+  </div>
 </div>
 
 <!-- ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
@@ -1110,10 +1120,10 @@ body{background:#060810;font-family:'DM Sans',sans-serif;color:var(--white);min-
 let cur = 'splash', role = 'buyer', toastTimer;
 
 const USERS = {
-  manager: { email:'pstgallant@gmail.com', pw:'123456789' },
-  buyer:   { email:'buyer@test.com',        pw:'test123' },
-  driver:  { email:'driver@test.com',       pw:'test123' },
-  provider:{ email:'provider@test.com',     pw:'test123' },
+  manager: { email:'manager@supplylink.co.za',  pw:'Manager@2026',  name:'Pstg Gallant' },
+  buyer:   { email:'buyer@supplylink.co.za',    pw:'Buyer@2026',    name:'Themba Mokoena' },
+  driver:  { email:'driver@supplylink.co.za',   pw:'Driver@2026',   name:'Sipho Nkosi' },
+  provider:{ email:'provider@supplylink.co.za', pw:'Provider@2026', name:'Sipho Provider' },
 };
 
 const NAV_CFG = {
@@ -1357,6 +1367,47 @@ function sendMsg2() {
 // Manager uses same convo screen logic but accessed via separate nav
 function openMgrChat() {
   // handled by mgr-chat screen below
+}
+
+// ─── BUILD CREDENTIALS PANEL ───
+(function buildCredPanel() {
+  const cfg = [
+    { role:'manager',  label:'Operations Manager', emoji:'📊', color:'var(--g)',      bg:'rgba(0,200,150,.12)' },
+    { role:'buyer',    label:'Buyer / Business',   emoji:'🏭', color:'var(--amber)',  bg:'rgba(245,158,11,.12)' },
+    { role:'driver',   label:'Driver',             emoji:'👤', color:'var(--blue)',   bg:'rgba(59,130,246,.12)' },
+    { role:'provider', label:'Service Provider',   emoji:'🚛', color:'var(--purple)', bg:'rgba(139,92,246,.12)' },
+  ];
+  const list = document.getElementById('credList');
+  if (!list) return;
+  cfg.forEach((c, i) => {
+    const u = USERS[c.role];
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:9px 14px;cursor:pointer;transition:background .18s;border-bottom:1px solid rgba(255,255,255,.05);';
+    row.innerHTML = `
+      <div style="width:32px;height:32px;border-radius:9px;background:${c.bg};display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">${c.emoji}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:${c.color};margin-bottom:1px;">${c.label}</div>
+        <div style="font-size:10px;color:var(--mist);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${u.email}</div>
+      </div>
+      <div style="font-size:10px;color:var(--mist);font-family:monospace;background:rgba(255,255,255,.05);padding:3px 7px;border-radius:5px;flex-shrink:0;">${u.pw}</div>
+    `;
+    if (i === cfg.length - 1) row.style.borderBottom = 'none';
+    row.onmouseenter = () => row.style.background = 'rgba(255,255,255,.04)';
+    row.onmouseleave = () => row.style.background = 'transparent';
+    row.onclick = () => fillCreds(c.role);
+    list.appendChild(row);
+  });
+})();
+
+function fillCreds(r) {
+  const u = USERS[r];
+  document.getElementById('emailInp').value = u.email;
+  document.getElementById('pwInp').value = u.pw;
+  role = r;
+  const lbls = { buyer:'Buyer', provider:'Service Provider', driver:'Driver', manager:'Operations Manager' };
+  document.getElementById('loginTitle').innerHTML = `Sign in as<br><span class="accent">${lbls[r]}</span>`;
+  document.getElementById('errMsg').style.display = 'none';
+  toast(`Credentials filled for ${lbls[r]} — tap Sign In`);
 }
 
 // ─── TOAST ───
